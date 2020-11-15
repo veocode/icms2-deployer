@@ -1,0 +1,101 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>InstantCMS 2 Deployer</title>
+    <link href="../../renderer/css/global.css" rel="stylesheet" media="all" />
+</head>
+<body>
+    <div id="wrap">
+
+        <nav class="static-ui navbar navbar-expand-lg navbar-dark bg-primary">
+            <span class="navbar-brand">
+                <span class="nav-back">
+                    <button class="btn btn-primary" onclick="app.stepBack()">
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-left-short"
+                            fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z" />
+                        </svg>
+                    </button>
+                </span>
+                <span class="nav-title">Мои сайты</span>
+            </span>
+        </nav>
+
+        <div class="workspace">
+
+            <div id="sitelist" class="component">
+                <ul class="list">
+
+                </ul>
+                <button class="btn btn-primary" onclick="app.addSite()">Добавить сайт</button>
+            </div>
+
+            <div id="siteadd" class="component">
+                <form id="siteform">
+                    <fieldset>
+                        <legend>Параметры сайта</legend>
+                        <div class="form-group">
+                            <label>Название сайта</label>
+                            <input name="name" type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>URL сайта</label>
+                            <input name="url" type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Локальная папка с сайтом</label>
+                            <input name="localDir" type="text" readonly id="input-dir" class="form-control">
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Параметры GIT</legend>
+                        <div class="form-group">
+                            <label>Адрес репозитория для сайта</label>
+                            <input name="gitRepo" type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Пользователь</label>
+                            <input name="gitUser" type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Пароль</label>
+                            <input name="gitPassword" type="password" class="form-control">
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Параметры сервера</legend>
+                        <div class="form-group">
+                            <label>Адрес IP</label>
+                            <input name="serverHost" type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Пользователь SSH</label>
+                            <input name="serverUser" type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Пароль SSH</label>
+                            <input name="serverPassword" type="password" class="form-control">
+                        </div>
+                    </fieldset>
+                    <button class="btn btn-primary">Продолжить</button>
+                </form>
+            </div>
+
+        </div>
+
+        <div id="deployer" class="component">
+            <h1>deployer</h1>
+        </div>
+
+
+
+    </div>
+
+    </div>
+
+    <script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>
+    <script src="../../renderer/libs/jquery.js"></script>
+    <script src="../../renderer/app.js"></script>
+</body>
+</html>
