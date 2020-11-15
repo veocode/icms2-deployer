@@ -15,14 +15,14 @@ class App {
     config = new Config();
 
     dom = {
-        $title: $('.nav-title'),
+        $title: $('.header .title'),
         $backBtn: $('.nav-back .btn')
     }
 
     components = {
         sitelist: new (componentClass('sitelist'))('sitelist', this),
-        siteadd: new (componentClass('siteadd'))('siteadd', this),
-        deployer: new (componentClass('deployer'))('deployer', this),
+        siteform: new (componentClass('siteform'))('siteform', this),
+        siteview: new (componentClass('siteview'))('siteview', this),
     }
     defaultComponent = 'sitelist';
     currentComponent = this.defaultComponent;
@@ -30,7 +30,6 @@ class App {
     back = null;
 
     start() {
-        this.setTitle("Мои сайты");
         this.view(this.defaultComponent);
     }
 
@@ -39,11 +38,53 @@ class App {
     }
 
     addSite() {
-        this.view('siteadd');
+        const defaultSite = {
+            name: '',
+            url: '',
+            localDir: '',
+            gitRepo: 'https://github.com/veocode/testrepo.git',
+            gitUser: 'veocode',
+            serverHost: '167.99.82.3',
+            serverPort: '22',
+            serverUser: 'root',
+        };
+        this.view('siteform', defaultSite, (site) => {
+            this.saveAddedSite(site);
+        });
     }
 
-    deploySite(site) {
+    editSite(site) {
+        this.view('siteform', site, (updatedSite) => {
+            this.saveUpdatedSite(updatedSite);
+        });
+    }
 
+    saveAddedSite(site) {
+        let sites = this.config.get('sites', []);
+        site.isDeployed = false;
+        site.id = sites.length + 1;
+        sites.push(site);
+        this.config.set('sites', sites);
+        this.stepBack();
+    }
+
+    saveUpdatedSite(site) {
+        let sites = this.config.get('sites', []);
+        console.log('site.id', site);
+        sites.forEach((storedSite, i) => {
+            console.log(storedSite.id);
+            if (storedSite.id == site.id) {
+                sites[i] = site;
+                console.log('FOUND');
+            }
+        });
+        console.log(sites);
+        this.config.set('sites', sites);
+        this.stepBack();
+    }
+
+    openSite(site) {
+        this.view('siteview', site);
     }
 
     setTitle(title, back) {
@@ -57,11 +98,15 @@ class App {
         }
     }
 
-    view(componentName, params) {
+    view(componentName, params, callback) {
         if (componentName != this.currentComponent) {
             this.components[this.currentComponent].deactivate();
         }
-        this.components[componentName].activate(params);
+        const component = this.components[componentName];
+        component.activate(params);
+        if (callback) {
+            component.setCallback(callback);
+        }
         this.currentComponent = componentName;
     }
 
@@ -83,4 +128,3 @@ var app = new App();
 $(() => {
     app.start();
 });
-

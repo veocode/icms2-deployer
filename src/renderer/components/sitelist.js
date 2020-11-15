@@ -1,12 +1,17 @@
+const { TouchBarScrubber } = require('electron');
 const Component = require('../component');
 
 class SiteList extends Component {
 
     $siteList = this.$dom('.list');
+    sites = [];
 
     onActivation() {
         this.app.setTitle('Мои сайты');
         this.buildSiteList();
+        this.bind({
+            'isSites': this.sites.length > 0
+        });
     }
 
     onDeactivation() {
@@ -14,21 +19,15 @@ class SiteList extends Component {
     }
 
     buildSiteList() {
-        this.$siteList.empty();
-        const sites = this.app.config.get('sites');
-
-        sites.forEach((site) => {
-            this.$siteList.append(this.buildSiteDOM(site));
+        this.sites = this.app.config.get('sites', [], true);
+        this.sites.forEach((site) => {
+            const $item = this.render('list-item', site);
+            $item.click((e) => {
+                e.preventDefault();
+                this.app.openSite(site);
+            });
+            this.$siteList.append($item);
         });
-    }
-
-    buildSiteDOM(site) {
-        let $dom = $('<div></div>').addClass('site').addClass('static-ui');
-
-        $('<div></div>').addClass('name').html(site.name).appendTo($dom);
-        $('<div></div>').addClass('url').html(site.url).appendTo($dom);
-
-        return $dom;
     }
 
 }

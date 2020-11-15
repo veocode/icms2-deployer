@@ -1,3 +1,4 @@
+var fs = require('fs');
 
 class Config {
 
@@ -16,12 +17,16 @@ class Config {
         this.load();
     }
 
-    get(key) {
-        return (key in this.values) ? this.values[key] : null;
+    get(key, defaultValue, isReloadFirst) {
+        if (isReloadFirst) {
+            this.load();
+        }
+        return (key in this.values) ? this.values[key] : defaultValue;
     }
 
     set(key, value) {
         this.values[key] = value;
+        this.save();
     }
 
     getDirPath() {
@@ -41,7 +46,7 @@ class Config {
             try { fs.mkdirSync(this.getDirPath()); } catch { }
         }
         const json = JSON.stringify(this.values, null, 4);
-        fs.writeFile(this.getFilePath(), json, () => { });
+        fs.writeFileSync(this.getFilePath(), json);
     }
 
     load() {
