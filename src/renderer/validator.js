@@ -8,6 +8,9 @@ class Validator {
         let isEmptyFields = false;
 
         Object.keys(values).forEach((fieldName) => {
+            if (['id', 'isDeployed'].indexOf(fieldName) >= 0){
+                return;
+            }
             if (values[fieldName] === '') { isEmptyFields = true; }
         });
 
@@ -17,7 +20,7 @@ class Validator {
         }
 
         if (!this.isFolderContainsICMS2(values.localDir)) {
-            callback(false, `InstantCMS 2 не найдена в указанной папке: ${values.localDir}`);
+            callback(false, `InstantCMS 2 не найдена в указанной папке:\n${values.localDir}`);
             return;
         }
 

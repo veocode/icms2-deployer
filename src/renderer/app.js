@@ -2,7 +2,6 @@ const os = require('os');
 const path = require('path');
 const fs = require('fs');
 const remote = require('electron').remote;
-console.log(remote);
 
 var Config = require('./../../renderer/config');
 
@@ -70,15 +69,11 @@ class App {
 
     saveUpdatedSite(site) {
         let sites = this.config.get('sites', []);
-        console.log('site.id', site);
         sites.forEach((storedSite, i) => {
-            console.log(storedSite.id);
             if (storedSite.id == site.id) {
                 sites[i] = site;
-                console.log('FOUND');
             }
         });
-        console.log(sites);
         this.config.set('sites', sites);
         this.stepBack();
     }
