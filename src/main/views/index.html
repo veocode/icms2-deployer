@@ -1,14 +1,14 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>InstantCMS 2 Deployer</title>
+    <title>InstantCMS 2 - Мастер публикации</title>
     <script src="https://use.fontawesome.com/9c28b8c4ea.js"></script>
     <link href="../../renderer/css/global.css" rel="stylesheet" media="all" />
 </head>
 <body>
-    <div id="wrap">
+    <div id="wrap" class="static-ui">
 
-        <nav class="static-ui header bg-primary">
+        <nav class="header bg-primary">
             <span class="nav-back">
                 <button class="btn btn-primary" onclick="app.stepBack()">
                     <i class="fa fa-angle-left"></i>
@@ -17,7 +17,7 @@
             <span class="title">Мои сайты</span>
             <span class="spacer"></span>
             <div>
-                <button class="btn btn-success" onclick="app.addSite()">
+                <button class="btn btn-info" onclick="app.addSite()">
                     <i class="fa fa-plus"></i> Добавить сайт
                 </button>
             </div>
@@ -29,7 +29,7 @@
 
             <div id="sitelist" class="component">
                 <ul class="list">
-                    <li class="site static-ui" data-template="list-item">
+                    <li class="site" data-template="list-item">
                         <div class="name" data-bind="name"></div>
                         <div class="url" data-bind="url"></div>
                     </li>
@@ -113,7 +113,7 @@
             <!-- siteview component -->
 
             <div id="siteview" class="component">
-                <div class="details static-ui">
+                <div class="details">
                     <h3 data-bind="name" class="site-name"></h3>
                     <div class="site-dir text-primary" data-bind="localDir"></div>
                     <div class="site-url text-muted" data-bind="url"></div>
@@ -122,6 +122,56 @@
                     <button class="btn btn-edit btn-secondary">Редактировать</button>
                     <button class="btn btn-deploy btn-info" data-not="isDeployed">Опубликовать</button>
                     <button class="btn btn-update btn-success" data-if="isDeployed">Обновить</button>
+                </div>
+            </div>
+
+
+            <!-- deployer component -->
+
+            <div id="deployer" class="component">
+                <div class="card form-panel">
+                    <div class="card-body">
+                        <h4>Введите пароли для публикации</h4>
+                        <div class="text-muted mb-4">
+                            Мы не храним пароли в целях безопасности, поэтому перед каждой публикацией их придется
+                            ввести вручную
+                        </div>
+                        <form id="deployer-form" class="m-0">
+                            <fieldset>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">
+                                        Пароль GIT для <span data-bind="gitUser"></span>:
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input name="gitPassword" type="password" class="form-control" value="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">
+                                        Пароль SSH для <span data-bind="serverUser"></span>:
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input name="serverPassword" type="password" class="form-control" value="">
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <button class="btn btn-success btn-submit mt-2">Начать публикацию</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="log-panel">
+                    <h4>Публикация сайта <span data-bind="name"></span></h4>
+                    <ul class="log">
+
+                    </ul>
+                    <div class="card terminal-view mt-4">
+                        <div class="card-header">
+                            Вывод терминала
+                        </div>
+                        <div class="card-body">
+                            <div class="terminal text-monospace"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

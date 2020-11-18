@@ -48,7 +48,7 @@ class SiteForm extends Component {
     }
 
     onDeactivation() {
-        this.$dom('#input-dir').off('click');
+        this.form.resetValues();
     }
 
 }

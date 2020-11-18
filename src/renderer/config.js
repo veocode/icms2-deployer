@@ -6,7 +6,17 @@ class Config {
     file = 'config.json';
 
     values = {
-        'sites': []
+        'sites': [],
+        'defaultSite': {
+            name: '',
+            url: '',
+            localDir: '',
+            gitRepo: 'https://github.com/veocode/testrepo.git',
+            gitUser: 'veocode',
+            serverHost: '167.99.82.3',
+            serverPort: '22',
+            serverUser: 'root',
+        }
     };
 
     constructor() {

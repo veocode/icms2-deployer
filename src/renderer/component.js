@@ -46,7 +46,6 @@ class Component {
 
     initTemplates() {
         this.$templates = {};
-        console.log(this.$dom('[data-template]'));
         this.$dom('[data-template]').each((i, template) => {
             const $template = $(template);
             const name = $template.attr('data-template');
@@ -78,6 +77,11 @@ class Component {
     setCallback(callback) {
         this.callback = callback;
     }
+
+
+    //
+    // Children Hooks
+    //
 
     onInit() { }
     onActivation(params) { }

@@ -13,6 +13,7 @@ class MainProcessWorker {
 
 	createMainWindow() {
 		const win = new BrowserWindow({
+			show: false,
 			width: 800,
 			height: 600,
 			webPreferences: {
@@ -22,6 +23,10 @@ class MainProcessWorker {
 		});
 
 		// win.setMenu(null);
+
+		win.once('ready-to-show', () => {
+			win.show()
+		});
 
 		win.on('close', () => {
 			app.quit();

@@ -23,13 +23,39 @@ class Validator {
 
         callback(true);
 
-        // this.testSSHConnectionWorks(values, (isWorks) => {
+    }
+
+    validatePasswords(site, passwords, callback) {
+
+        const sshCredentials = {
+            host: site.serverHost,
+            port: site.serverPort,
+            user: site.serverUser,
+            password: passwords.serverPassword
+        };
+
+        // this.testSSHConnectionWorks(sshCredentials, (isWorks) => {
+
         //     if (!isWorks) {
-        //         callback(false, 'Не удалось подключиться к серверу по SSH\nПроверьте правильность реквизитов');
+        //         callback(false, 'Не удалось подключиться к серверу по SSH:\nПроверьте правильность реквизитов');
         //         return;
         //     }
-        //     callback(true);
+
+        this.testGitInstalled((isInstalled) => {
+
+            console.log('testGitInstalled CALLBACK');
+
+            if (!isInstalled) {
+                callback(false, 'Не удалось запустить команду git:\nПроверьте, что Git установлен и команда git доступна в ОС из командной строки');
+                return;
+            }
+
+            callback(true);
+
+        });
+
         // });
+
 
     }
 
@@ -39,23 +65,61 @@ class Validator {
         return isContains;
     }
 
-    testSSHConnectionWorks(values, callback) {
+    testGitInstalled(callback) {
+
+        console.log('testGitInstalled');
+
+        const shellService = require('./services/shell');
+
+        shellService.stdoutCallback = (message) => {
+            console.log('[STDOUT] ' + message);
+        }
+
+        shellService.exec('git --version', '', (error) => {
+            console.log('EXEC CALLBACK');
+            if (error) {
+                callback(false);
+                return;
+            }
+            callback(true);
+        });
+
+    }
+
+    testSSHConnectionWorks(credentials, callback) {
+
+        console.log('testSSHConnectionWorks');
 
         const connect = require('ssh2-connect');
 
         const opts = {
-            host: values.serverHost,
-            port: values.serverPort,
-            username: values.serverUser,
-            password: values.serverPassword
+            host: credentials.host,
+            port: credentials.port,
+            username: credentials.user,
+            password: credentials.password
         };
 
+        // connect(opts, function (err, ssh) {
+        //     console.log('testSSHConnectionWorks connect', err);
+        //     if (err) {
+        //         callback(false);
+        //         return;
+        //     }
+        //     ssh.end();
+        //     callback(true);
+        // });
+
+
         (async () => {
+            console.log('testSSHConnectionWorks async');
             try {
+                console.log('testSSHConnectionWorks try');
                 const ssh = await connect(opts)
-                callback(true);
+                console.log('testSSHConnectionWorks success')
                 ssh.end()
+                callback(true);
             } catch (err) {
+                console.log('testSSHConnectionWorks catch');
                 callback(false);
             }
         })();

@@ -4,10 +4,15 @@ class FormHandler {
     $form;
     callback;
 
+    isLoading = false;
+
     constructor(selector, callback) {
         this.$form = $(selector);
         this.$form.find('.btn-submit').click((e) => {
             e.preventDefault();
+            if (this.isLoading) {
+                return;
+            }
             if (callback) {
                 callback(this.getValues(), this);
             }
@@ -15,11 +20,13 @@ class FormHandler {
     }
 
     startLoading() {
+        this.isLoading = true;
         this.$form.find('.btn-submit').hide();
         this.$form.append('<div class="form-wait"><div class="overlay"></div><div class="text">Проверка введенных данных...</div></div>')
     }
 
     endLoading() {
+        this.isLoading = false;
         this.$form.find('.btn-submit').show();
         this.$form.find('.form-wait').remove();
     }
@@ -49,6 +56,14 @@ class FormHandler {
 
     setCallback(callback) {
         this.callback = callback;
+    }
+
+    hide() {
+        this.$form.hide();
+    }
+
+    show() {
+        this.$form.show();
     }
 
 }

@@ -2,107 +2,81 @@ const os = require('os');
 const path = require('path');
 const fs = require('fs');
 const remote = require('electron').remote;
-console.log(remote);
-
 var Config = require('./../../renderer/config');
 
-function componentClass(className) {
-    return require(`./../../renderer/components/${className}`);
-}
 
 class App {
 
     config = new Config();
+
+    //
+    // Application Properties
+    //
+
+    components = [
+        'sitelist',
+        'siteform',
+        'siteview',
+        'deployer'
+    ];
+    defaultComponent = 'sitelist';
+
+    //
+    // Framework Properties
+    //
 
     dom = {
         $title: $('.header .title'),
         $backBtn: $('.nav-back .btn')
     }
 
-    components = {
-        sitelist: new (componentClass('sitelist'))('sitelist', this),
-        siteform: new (componentClass('siteform'))('siteform', this),
-        siteview: new (componentClass('siteview'))('siteview', this),
-    }
-    defaultComponent = 'sitelist';
+    componentInstances = {};
     currentComponent = this.defaultComponent;
+    previousComponent = null;
+    previousComponentParams = null;
 
-    back = null;
+    //
+    // Framework Logic
+    //
 
     start() {
+        this.initComponents();
         this.view(this.defaultComponent);
     }
 
     stepBack() {
-        this.view(this.back);
+        this.view(this.previousComponent, this.previousComponentParams);
     }
 
-    addSite() {
-        const defaultSite = {
-            name: '',
-            url: '',
-            localDir: '',
-            gitRepo: 'https://github.com/veocode/testrepo.git',
-            gitUser: 'veocode',
-            serverHost: '167.99.82.3',
-            serverPort: '22',
-            serverUser: 'root',
-        };
-        this.view('siteform', defaultSite, (site) => {
-            this.saveAddedSite(site);
+    initComponents() {
+        this.components.forEach((componentName) => {
+            this.componentInstances[componentName] = this.makeComponent(componentName);
         });
     }
 
-    editSite(site) {
-        this.view('siteform', site, (updatedSite) => {
-            this.saveUpdatedSite(updatedSite);
-        });
+    makeComponent(componentName) {
+        const componentClass = require(`./../../renderer/components/${componentName}`);
+        return new (componentClass)(componentName, this);
     }
 
-    saveAddedSite(site) {
-        let sites = this.config.get('sites', []);
-        site.isDeployed = false;
-        site.id = sites.length + 1;
-        sites.push(site);
-        this.config.set('sites', sites);
-        this.stepBack();
-    }
-
-    saveUpdatedSite(site) {
-        let sites = this.config.get('sites', []);
-        console.log('site.id', site);
-        sites.forEach((storedSite, i) => {
-            console.log(storedSite.id);
-            if (storedSite.id == site.id) {
-                sites[i] = site;
-                console.log('FOUND');
-            }
-        });
-        console.log(sites);
-        this.config.set('sites', sites);
-        this.stepBack();
-    }
-
-    openSite(site) {
-        this.view('siteview', site);
-    }
-
-    setTitle(title, back) {
+    setTitle(title, previousComponent, previousComponentParams) {
         this.dom.$title.html(title);
-        if (back) {
+        if (previousComponent) {
             this.dom.$backBtn.show();
-            this.back = back;
+            this.previousComponent = previousComponent;
+            this.previousComponentParams = previousComponentParams;
         } else {
             this.dom.$backBtn.hide();
-            this.back = null;
+            this.previousComponent = null;
+            this.previousComponentParams = null;
         }
     }
 
     view(componentName, params, callback) {
-        if (componentName != this.currentComponent) {
-            this.components[this.currentComponent].deactivate();
+        if (this.currentComponent) {
+            this.componentInstances[this.currentComponent].deactivate();
         }
-        const component = this.components[componentName];
+        const component = this.componentInstances[componentName];
         component.activate(params);
         if (callback) {
             component.setCallback(callback);
@@ -121,7 +95,53 @@ class App {
         });
     }
 
+    //
+    // Application Logic
+    //
+
+    addSite() {
+        const defaultSite = this.config.get('defaultSite', {});
+        this.view('siteform', defaultSite, (site) => {
+            this.saveAddedSite(site);
+        });
+    }
+
+    editSite(site) {
+        this.view('siteform', site, (updatedSite) => {
+            this.saveUpdatedSite(updatedSite);
+        });
+    }
+
+    openSite(site) {
+        this.view('siteview', site);
+    }
+
+    deploySite(site) {
+        this.view('deployer', site);
+    }
+
+    saveAddedSite(site) {
+        let sites = this.config.get('sites', []);
+        site.isDeployed = false;
+        site.id = sites.length + 1;
+        sites.push(site);
+        this.config.set('sites', sites);
+        this.stepBack();
+    }
+
+    saveUpdatedSite(site) {
+        let sites = this.config.get('sites', []);
+        sites.forEach((storedSite, i) => {
+            if (storedSite.id == site.id) {
+                sites[i] = site;
+            }
+        });
+        this.config.set('sites', sites);
+        this.stepBack();
+    }
+
 }
+
 
 var app = new App();
 

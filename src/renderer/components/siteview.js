@@ -9,6 +9,10 @@ class SiteView extends Component {
             e.preventDefault();
             this.app.editSite(this.site);
         });
+        this.$dom('.btn-deploy').click((e) => {
+            e.preventDefault();
+            this.app.deploySite(this.site);
+        });
     }
 
     onActivation(site) {
