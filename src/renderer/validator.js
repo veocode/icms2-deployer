@@ -8,7 +8,7 @@ class Validator {
         let isEmptyFields = false;
 
         Object.keys(values).forEach((fieldName) => {
-            if (['id', 'isDeployed'].indexOf(fieldName) >= 0){
+            if (['id', 'isDeployed'].indexOf(fieldName) >= 0) {
                 return;
             }
             if (values[fieldName] === '') { isEmptyFields = true; }
@@ -46,8 +46,6 @@ class Validator {
 
         this.testGitInstalled((isInstalled) => {
 
-            console.log('testGitInstalled CALLBACK');
-
             if (!isInstalled) {
                 callback(false, 'Не удалось запустить команду git:\nПроверьте, что Git установлен и команда git доступна в ОС из командной строки');
                 return;
@@ -70,8 +68,6 @@ class Validator {
 
     testGitInstalled(callback) {
 
-        console.log('testGitInstalled');
-
         const shellService = require('./services/shell');
 
         shellService.stdoutCallback = (message) => {
@@ -79,7 +75,6 @@ class Validator {
         }
 
         shellService.exec('git --version', '', (error) => {
-            console.log('EXEC CALLBACK');
             if (error) {
                 callback(false);
                 return;
@@ -91,8 +86,6 @@ class Validator {
 
     testSSHConnectionWorks(credentials, callback) {
 
-        console.log('testSSHConnectionWorks');
-
         const connect = require('ssh2-connect');
 
         const opts = {
@@ -103,7 +96,6 @@ class Validator {
         };
 
         // connect(opts, function (err, ssh) {
-        //     console.log('testSSHConnectionWorks connect', err);
         //     if (err) {
         //         callback(false);
         //         return;
@@ -114,15 +106,11 @@ class Validator {
 
 
         (async () => {
-            console.log('testSSHConnectionWorks async');
             try {
-                console.log('testSSHConnectionWorks try');
                 const ssh = await connect(opts)
-                console.log('testSSHConnectionWorks success')
                 ssh.end()
                 callback(true);
             } catch (err) {
-                console.log('testSSHConnectionWorks catch');
                 callback(false);
             }
         })();

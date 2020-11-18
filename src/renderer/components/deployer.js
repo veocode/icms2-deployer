@@ -1,4 +1,3 @@
-const { TouchBarScrubber } = require('electron');
 const Component = require('../component');
 const FormHandler = require('../formhandler');
 const Validator = require('../validator');
@@ -15,7 +14,6 @@ class Deployer extends Component {
     deployService = require('../services/deploy');
 
     passwordsForm = new FormHandler('#deployer form', (passwords, form) => {
-        console.log('form handler');
         form.startLoading();
         const validator = new Validator();
         validator.validatePasswords(this.site, passwords, (isValid, error) => {
