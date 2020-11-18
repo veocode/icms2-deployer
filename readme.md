@@ -6,3 +6,4 @@ $ cd icms2-deployer
 $ npm install
 $ npm start
 ```
+
