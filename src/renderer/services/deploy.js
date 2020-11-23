@@ -87,7 +87,7 @@ class DeployService {
 
     runNextTask() {
         if (this.tasks.length == 0) {
-            this.done();            
+            this.done();
             return;
         }
         const taskHandler = this.tasks.shift();
@@ -218,6 +218,10 @@ class DeployService {
         this.log(`Инициализируем icms2-docker...`);
         
         let command = `./init.sh deploy ${this.site.gitRepoFull} --skip-wizard`;
+
+        if (this.site.config.PHPMYADMIN_PORT) {
+            command += ' --with-pma';
+        }
 
         this.sshService.exec(command, this.site.serverDir, (isSuccess) => {
             if (!isSuccess) {

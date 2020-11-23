@@ -109,6 +109,7 @@ html, body {
 }
 
 #sitelist .list li {
+    position: relative;
     background:#FFF;
     float:left;
     display:block;
@@ -128,13 +129,24 @@ html, body {
 }
 
 #sitelist .list li .name {
-    font-size:24px;
-    font-weight:bold;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 24px;
+    margin-bottom: 5px;    
 }
 
 #sitelist .list li .url {
     font-weight:lighter;
     font-size:16px;
+}
+
+#sitelist .list li .status {
+    position: absolute;
+    bottom:0;
+    right:0;
+    padding:10px;
+    font-weight: bold;
+    font-size:12px;
 }
 
 #sitelist .no-sites {

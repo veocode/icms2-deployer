@@ -109,6 +109,7 @@ class App {
     editSite(site) {
         this.view('siteform', site, (updatedSite) => {
             this.saveUpdatedSite(updatedSite);
+            this.stepBack();
         });
     }
 
@@ -137,7 +138,6 @@ class App {
             }
         });
         this.config.set('sites', sites);
-        this.stepBack();
     }
 
 }

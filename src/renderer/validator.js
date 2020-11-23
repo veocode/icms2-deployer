@@ -30,6 +30,20 @@ class Validator {
 
     validateCredentials(site, credentials, callback) {
 
+        let isEmptyFields = false;
+
+        Object.keys(credentials).forEach((fieldName) => {
+            if (['PHPMYADMIN_PORT'].indexOf(fieldName) >= 0) {
+                return;
+            }
+            if (credentials[fieldName] === '') { isEmptyFields = true; }
+        });
+
+        if (isEmptyFields) {
+            callback(false, 'Заполните все поля');
+            return;
+        }
+
         const sshCredentials = {
             host: site.serverHost,
             port: site.serverPort,

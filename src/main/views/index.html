@@ -32,6 +32,10 @@
                     <li class="site" data-template="list-item">
                         <div class="name" data-bind="name"></div>
                         <div class="url" data-bind="url"></div>
+                        <div class="status">
+                            <div class="deployed text-success" data-if="isDeployed">Опубликован</div>
+                            <div class="not-deployed text-secondary" data-not="isDeployed">Не опубликован</div>
+                        </div>
                     </li>
                 </ul>
                 <div class="no-sites" data-not="isSites">
@@ -206,7 +210,8 @@
                         <ul class="log">
                             <li></li>
                         </ul>
-                    </div>                    
+                        <button class="btn btn-primary btn-done mt-4" style="display: none">Продолжить</button>
+                    </div>   
                     <div class="terminal-view">
                         <div class="terminal"></div>                        
                     </div>                    
