@@ -28,13 +28,13 @@ class Validator {
 
     }
 
-    validatePasswords(site, passwords, callback) {
+    validateCredentials(site, credentials, callback) {
 
         const sshCredentials = {
             host: site.serverHost,
             port: site.serverPort,
             user: site.serverUser,
-            password: passwords.serverPassword
+            password: credentials.serverPassword
         };
 
         // this.testSSHConnectionWorks(sshCredentials, (isWorks) => {

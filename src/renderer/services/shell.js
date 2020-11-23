@@ -1,10 +1,13 @@
 class ShellService {
 
+    execCallback;
     stdoutCallback;
     stderrCallback;
 
     exec(command, cwd, callback) {
-        console.log('[EXEC]', command);
+        if (this.execCallback){
+            this.execCallback(command);
+        }
         var child_process = require('child_process');
         var parts = command.split(/\s+/g);
         var options = {};

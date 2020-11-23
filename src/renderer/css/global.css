@@ -49,6 +49,11 @@ html, body {
     display:none;
 }
 
+.legend-hint {
+    display: block;
+    margin-bottom: 20px;
+}
+
 #btn-select-dir {
     margin-left:10px;
 }
@@ -151,10 +156,81 @@ html, body {
     font-weight: bold;
 }
 
+#deployer .log-panel {
+    display: flex;
+    flex-direction: row;    
+}
+
+#deployer .log-view {
+    width:335px;
+}
+
+#deployer .log,
+#deployer .log .message {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-bottom:3px;
+    font-size:14px;
+}
+
+#deployer .log .message::before {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    content: "\f00c";
+    width:22px;
+    height:16px;
+    text-align: center;
+    color: #20bf6b;
+}
+
+#deployer .log .message-hint::before{
+    content: "\f05a";
+    color: #57606f;
+}
+
+#deployer .log .message-error::before {
+    content: "\f00d";
+    color: #b33939;
+}
+
+#deployer .log .message-hint { color: #57606f; }
+#deployer .log .message-error { color: #b33939; }
+
+#deployer .log .message:not(.message-error):not(.message-done):last-child::before {
+    animation: fa-spin 2s infinite linear;
+    content: "\f110";
+    color: #2b2b2b;
+}
+
+#deployer .terminal-view {
+    flex:1;
+    margin-left: 10px;
+    display:block;
+    background: #32383c;
+    padding:20px;
+    border-radius: 6px;
+    height:calc(100vh - 115px);
+    width:100%;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
 #deployer .terminal {
     white-space: pre;
+    font-family: monospace;
+    color:#DDD;
 }
 
 #deployer .terminal .line-stderr {
-    color: #b76666;
+    color: #de9c76;
+}
+
+#deployer .terminal .line-exec {
+    color: #00c4ff;
+    font-weight: bold;
+    margin-top:5px;
 }

@@ -10,20 +10,20 @@ class Deployer extends Component {
     $logPanel = this.$dom('.log-panel');
     $log = this.$dom('.log');
     $terminal = this.$dom('.terminal');
+    $terminalView = this.$dom('.terminal-view');
 
-    deployService = require('../services/deploy');
+    deployService = require('../services/deploy');    
 
-    passwordsForm = new FormHandler('#deployer form', (passwords, form) => {
+    credentialsForm = new FormHandler('#deployer form', (credentials, form) => {
         form.startLoading();
         const validator = new Validator();
-        validator.validatePasswords(this.site, passwords, (isValid, error) => {
-            console.error('Validated', isValid);
+        validator.validateCredentials(this.site, credentials, (isValid, error) => {
             form.endLoading();
             if (!isValid) {
                 alert(error);
                 return;
             }
-            this.deploy(passwords);
+            this.deploy(credentials);
         });
     });
 
@@ -37,20 +37,32 @@ class Deployer extends Component {
         this.$logPanel.hide();
         this.$log.empty();
         this.$terminal.empty().html('');
-        this.app.setTitle('Публикация сайта', 'siteview', this.site);
+        this.credentialsForm.setValues(this.app.config.get('defaultDeployConfig', {}));
+        this.app.setTitle('Публикация сайта', 'siteview', this.site);        
     }
 
     onDeactivation() {
         this.site = null;
-        this.passwordsForm.resetValues();
+        this.credentialsForm.resetValues();
     }
 
-    deploy(passwords) {
-
+    deploy(credentials) {
         this.$formPanel.hide();
         this.$logPanel.show();
 
-        this.site = $.extend(this.site, passwords);
+        this.site.gitPassword = credentials.gitPassword;
+        this.site.serverPassword = credentials.serverPassword;
+
+        delete credentials.gitPassword;
+        delete credentials.serverPassword;
+
+        this.site.config = credentials;
+        this.site.config.PHPMYADMIN_INSTALL = 'y'; 
+        
+        if (!credentials.PHPMYADMIN_PORT) {
+            this.site.config.PHPMYADMIN_INSTALL = 'n'; 
+            this.site.config.PHPMYADMIN_PORT = 8080; 
+        }
 
         this.deployService.deploy({
             site: this.site,
@@ -58,22 +70,30 @@ class Deployer extends Component {
                 this.log(logMessage);
             },
             onDone: (isSuccess) => {
-                if (isSuccess) {
-                    alert('DONE!');
-                }
+                this.done(isSuccess);
             }
         });
+    }
 
+    done(isSuccess){
+        if (isSuccess) {
+            let url = `http://${this.site.serverHost}`;
+            if (this.site.serverPort != 80){
+                url += `:${this.site.serverPort}`;
+            }
+            url += '/';
+            this.log({text: `Готово! Ваш сайт: <a href="${url}">${url}</a>`})
+        }
     }
 
     log(message) {
-
-        if (message.type == 'stdout' || message.type == 'stderr') {
+        if (message.type == 'stdout' || message.type == 'stderr' || message.type == 'exec') {
             this.$terminal.append(`<div class="line line-${message.type}">${message.text}</div>`);
+            this.$terminalView.scrollTop(this.$terminal.height());
             return;
         }
 
-        let $message = $('<li></li>').addClass('message').html(message.text);
+        let $message = $('<li></li>').addClass('message').addClass(`message-${message.type}`).html(message.text);
         this.$log.append($message);
     }
 
