@@ -1,17 +1,9 @@
-class DeployService {
+const TaskRunnerService = require('./taskrunner');
+
+class DeployService extends TaskRunnerService {
 
     icms2dockerRepoUrl = 'https://github.com/veocode/icms2-docker.git';
     serverSiteRoot = '/opt';
-
-    site;
-    onLog;
-    onDone;
-
-    shellService = require('../services/shell');
-    gitService = require('../services/git');
-    sshService = require('../services/ssh');
-
-    tasks = [];
 
     getTasks() {
         return [
@@ -26,73 +18,10 @@ class DeployService {
         ];
     }
 
-    deploy(options) {
-        this.halted = false;
-        this.site = options.site;
-        this.onLog = options.onLog;
-        this.onDone = options.onDone;      
-        this.tasks = this.getTasks();  
-        
+    onStart(options) {
         this.site.gitRepoFull = this.gitService.getRepoUrlWithCredentials(this.site.gitRepo, this.site.gitUser, this.site.gitPassword);                
         this.site.serverDir = this.serverSiteRoot + '/' + this.site.name;
-
-        this.initService();
-        this.runNextTask();
-    }
-
-    initService() {
-        this.shellService.execCallback = (line) => {
-            this.log('$ ' + line, 'exec');
-        };
-        this.shellService.stdoutCallback = (line) => {
-            this.log(line, 'stdout');
-        };
-        this.shellService.stderrCallback = (line) => {
-            this.log(line, 'stderr');
-        }
-        this.sshService.execCallback = (line) => {
-            this.log('$ ' + line, 'exec');
-        };        
-        this.sshService.stdoutCallback = (line) => {
-            this.log(line, 'stdout');
-        };
-        this.sshService.stderrCallback = (line) => {
-            this.log(line, 'stderr');
-        }
-    }
-
-    log(text, type) {
-        type = type || 'step';
-        this.onLog({ text, type });
-    }
-
-    error(text) {
-        this.log(text, 'error');
-    }
-
-    hint(text) {
-        return this.log(text, 'hint');
-    }
-
-    halt(message) {
-        this.error(message ? message : 'Выполнение остановлено');
-        this.sshService.close();
-        this.onDone(false);
-    }
-
-    done() {
-        this.sshService.close();
-        this.onDone(true);        
-    }
-
-    runNextTask() {
-        if (this.tasks.length == 0) {
-            this.done();
-            return;
-        }
-        const taskHandler = this.tasks.shift();
-        taskHandler.call(this);
-    }
+    }    
 
     //
     // Task Handlers

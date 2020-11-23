@@ -71,7 +71,7 @@ class Deployer extends Component {
             siteToDeploy.config.PHPMYADMIN_PORT = 8080; 
         }
 
-        this.deployService.deploy({
+        this.deployService.start({
             site: siteToDeploy,
             onLog: (logMessage) => {
                 this.log(logMessage);
