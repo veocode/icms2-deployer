@@ -75,7 +75,7 @@ class DeployService {
     }
 
     halt(message) {
-        this.error(message ? message : 'Публикация остановлена');
+        this.error(message ? message : 'Выполнение остановлено');
         this.sshService.close();
         this.onDone(false);
     }
