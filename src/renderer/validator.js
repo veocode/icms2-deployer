@@ -5,20 +5,6 @@ class Validator {
 
     validateSite(values, callback) {
 
-        let isEmptyFields = false;
-
-        Object.keys(values).forEach((fieldName) => {
-            if (['id', 'isDeployed'].indexOf(fieldName) >= 0) {
-                return;
-            }
-            if (values[fieldName] === '') { isEmptyFields = true; }
-        });
-
-        if (isEmptyFields) {
-            callback(false, 'Заполните все поля');
-            return;
-        }
-
         if (!this.isFolderContainsICMS2(values.localDir)) {
             callback(false, `InstantCMS 2 не найдена в указанной папке:\n${values.localDir}`);
             return;
@@ -30,33 +16,12 @@ class Validator {
 
     validateCredentials(site, credentials, callback) {
 
-        let isEmptyFields = false;
-
-        Object.keys(credentials).forEach((fieldName) => {
-            if (['PHPMYADMIN_PORT'].indexOf(fieldName) >= 0) {
-                return;
-            }
-            if (credentials[fieldName] === '') { isEmptyFields = true; }
-        });
-
-        if (isEmptyFields) {
-            callback(false, 'Заполните все поля');
-            return;
-        }
-
         const sshCredentials = {
             host: site.serverHost,
             port: site.serverPort,
             user: site.serverUser,
             password: credentials.serverPassword
         };
-
-        // this.testSSHConnectionWorks(sshCredentials, (isWorks) => {
-
-        //     if (!isWorks) {
-        //         callback(false, 'Не удалось подключиться к серверу по SSH:\nПроверьте правильность реквизитов');
-        //         return;
-        //     }
 
         this.testGitInstalled((isInstalled) => {
 
@@ -69,9 +34,6 @@ class Validator {
 
         });
 
-        // });
-
-
     }
 
     isFolderContainsICMS2(dir) {
@@ -83,10 +45,6 @@ class Validator {
     testGitInstalled(callback) {
 
         const shellService = require('./services/shell');
-
-        shellService.stdoutCallback = (message) => {
-            console.log('[STDOUT] ' + message);
-        }
 
         shellService.exec('git --version', '', (error) => {
             if (error) {
@@ -108,16 +66,6 @@ class Validator {
             username: credentials.user,
             password: credentials.password
         };
-
-        // connect(opts, function (err, ssh) {
-        //     if (err) {
-        //         callback(false);
-        //         return;
-        //     }
-        //     ssh.end();
-        //     callback(true);
-        // });
-
 
         (async () => {
             try {

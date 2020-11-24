@@ -6,6 +6,8 @@ const Validator = require('../validator');
 class Deployer extends Component {
 
     site;
+    siteToDeploy;
+
     $formPanel = this.$dom('.form-panel');
     $logPanel = this.$dom('.log-panel');
     $log = this.$dom('.log');
@@ -55,24 +57,24 @@ class Deployer extends Component {
         this.$formPanel.hide();
         this.$logPanel.show();
 
-        let siteToDeploy = { ...this.site };
+        this.siteToDeploy = { ...this.site };
 
-        siteToDeploy.gitPassword = credentials.gitPassword;
-        siteToDeploy.serverPassword = credentials.serverPassword;
+        this.siteToDeploy.gitPassword = credentials.gitPassword;
+        this.siteToDeploy.serverPassword = credentials.serverPassword;
 
         delete credentials.gitPassword;
         delete credentials.serverPassword;
 
-        siteToDeploy.config = credentials;
-        siteToDeploy.config.PHPMYADMIN_INSTALL = 'y';
+        this.siteToDeploy.config = credentials;
+        this.siteToDeploy.config.PHPMYADMIN_INSTALL = 'y';
 
         if (!credentials.PHPMYADMIN_PORT) {
-            siteToDeploy.config.PHPMYADMIN_INSTALL = 'n';
-            siteToDeploy.config.PHPMYADMIN_PORT = 8080;
+            this.siteToDeploy.config.PHPMYADMIN_INSTALL = 'n';
+            this.siteToDeploy.config.PHPMYADMIN_PORT = 8080;
         }
 
         this.deployService.start({
-            site: siteToDeploy,
+            site: this.siteToDeploy,
             onLog: (logMessage) => {
                 this.log(logMessage);
             },
@@ -91,11 +93,11 @@ class Deployer extends Component {
             this.app.saveUpdatedSite(this.site);
 
             let url = `http://${this.site.serverHost}`;
-            if (this.site.serverPort != 80) {
-                url += `:${this.site.serverPort}`;
+            if (this.siteToDeploy.config.HTTP_PORT != 80) {
+                url += `:${this.siteToDeploy.config.HTTP_PORT}`;
             }
             url += '/';
-            this.log({ text: `Готово! Ваш сайт: <a href="${url}">${url}</a>`, type: 'done' });
+            this.log({ text: `Готово! Ваш сайт: <a class="shell-link" href="${url}">${url}</a>`, type: 'done' });
         }
     }
 

@@ -12,6 +12,16 @@ class SiteList extends Component {
         this.bind({
             'isSites': this.sites.length > 0
         });
+        if (this.sites.length > 0) {
+            this.app.setToolbar([{
+                hint: 'Добавить сайт',
+                icon: 'plus',
+                class: 'info',
+                click: () => {
+                    this.app.addSite();
+                }
+            }]);
+        }
     }
 
     onDeactivation() {

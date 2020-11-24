@@ -2,6 +2,7 @@ const os = require('os');
 const path = require('path');
 const fs = require('fs');
 const remote = require('electron').remote;
+const shell = require('electron').shell;
 var Config = require('./../../renderer/config');
 
 
@@ -29,6 +30,7 @@ class App {
 
     dom = {
         $title: $('.header .title'),
+        $toolbar: $('.header .toolbar'),
         $backBtn: $('.nav-back .btn')
     }
 
@@ -44,7 +46,8 @@ class App {
     start() {
         $('title').text(this.title);
         this.initComponents();
-        this.view(this.defaultComponent);
+        this.initControls();
+        this.view(this.defaultComponent);        
     }
 
     stepBack() {
@@ -54,6 +57,19 @@ class App {
     initComponents() {
         this.components.forEach((componentName) => {
             this.componentInstances[componentName] = this.makeComponent(componentName);
+        });
+    }
+
+    initControls() {
+        $('a.shell-link').on('click', (e) => {
+            e.preventDefault();
+            const $link = $(e.target);
+            shell.openExternal($link.attr('href'));
+        });
+        $('a.shell-path').on('click', (e) => {
+            e.preventDefault();
+            const $link = $(e.target);
+            shell.openPath($link.attr('href'));
         });
     }
 
@@ -75,9 +91,42 @@ class App {
         }
     }
 
+    setToolbar(buttons) {
+        this.resetToolbar();
+        buttons.forEach((button) => {
+            if (button === '-') {
+                $('<span class="spacer"></span>').appendTo(this.dom.$toolbar);
+                return;
+            }
+
+            let $button = $('<button class="btn"></button>').appendTo(this.dom.$toolbar);
+            $button.addClass(`btn-${button.class}`);                                    
+            if (button.hint){
+                $button.attr('title', button.hint);
+            }
+            if (button.icon){
+                let $icon = $('<i class="fa"></i>').appendTo($button);
+                $icon.addClass(`fa-${button.icon}`);
+            }
+            if (button.title){
+                let $title = $('<span></span>').appendTo($button);
+                $title.text(button.title);        
+            }
+            $button.click((e) => {
+                e.preventDefault();
+                button.click();
+            });  
+        });
+    }
+
+    resetToolbar() {
+        this.dom.$toolbar.empty();
+    }
+
     view(componentName, params, callback) {
         if (this.currentComponent) {
             this.componentInstances[this.currentComponent].deactivate();
+            this.resetToolbar();
         }
         const component = this.componentInstances[componentName];
         component.activate(params);
@@ -104,7 +153,22 @@ class App {
         remote.dialog.showMessageBox(null, {
             type: type,
             title: title,
-            message: message
+            message: message,
+            buttons: ["Ok"]
+        });
+    }
+
+    confirm(message, callback) {
+        remote.dialog.showMessageBox(null, {
+            type: 'question',
+            title: 'Требуется подтверждение',
+            message: message,
+            buttons: ["Да", "Нет"],
+            defaultId: 1,
+        }).then((result) => {
+            if (result.response === 0){
+                callback();
+            }
         });
     }
 
@@ -153,10 +217,24 @@ class App {
         this.config.set('sites', sites);
     }
 
+    deleteSite(site) {
+        let sites = this.config.get('sites', []);
+        let updatedSites = [];
+        sites.forEach((storedSite, i) => {
+            if (storedSite.id != site.id) {
+                updatedSites.push(storedSite);
+            }
+        });
+        this.config.set('sites', updatedSites);
+    }
+
 }
 
-
 var app = new App();
+
+function app(){
+    return app;
+}
 
 $(() => {
     app.start();

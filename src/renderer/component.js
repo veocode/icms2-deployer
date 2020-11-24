@@ -17,12 +17,14 @@ class Component {
     }
 
     bind(data, $rootElement) {
+        const bindableAttrs = ['href', 'title', 'class', 'value'];
         if (!$rootElement) {
             $rootElement = this.$container;
         }
         Object.keys(data).forEach((fieldName) => {
             const value = data[fieldName];
             $rootElement.find(`[data-bind=${fieldName}]`).html(value);
+            bindableAttrs.forEach((attrName) => $rootElement.find(`[data-bind-${attrName}=${fieldName}]`).attr(attrName, value));
             if (value) {
                 $rootElement.find(`[data-if=${fieldName}]`).show();
                 $rootElement.find(`[data-not=${fieldName}]`).hide();

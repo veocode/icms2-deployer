@@ -16,10 +16,7 @@
             </span>
             <span class="title">Мои сайты</span>
             <span class="spacer"></span>
-            <div>
-                <button class="btn btn-info" onclick="app.addSite()">
-                    <i class="fa fa-plus"></i> Добавить сайт
-                </button>
+            <div class="toolbar">
             </div>
         </nav>
 
@@ -40,85 +37,117 @@
                 </ul>
                 <div class="no-sites" data-not="isSites">
                     <p>Вы не добавили ни одного сайта</p>
-                    <button class="btn btn-primary" onclick="app.addSite()">Добавить сайт</button>
+                    <button class="btn btn-info" onclick="app.addSite()">Добавить сайт</button>
                 </div>
             </div>
 
 
-            <!-- siteadd component -->
+            <!-- siteform component -->
 
             <div id="siteform" class="component">
                 <form id="site-form">
                     <input type="hidden" name="id" value="">
                     <input type="hidden" name="isDeployed" value="">
-                    <fieldset>
-                        <legend>Параметры сайта</legend>
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Локальная папка</label>
-                            <div class="col-sm-9">
-                                <input name="localDir" type="text" readonly id="input-dir" class="form-control"
-                                    value="">
+                    <div class="card">
+                        <div class="card-header">Параметры сайта</div>
+                        <div class="card-body">
+                            <div class="flex-row">
+                                <div class="title">Локальная папка</div>
+                                <div class="value">
+                                    <input name="localDir" type="text" readonly id="input-dir" class="form-control" 
+                                        data-val-required="Укажите локальную папку сайта"
+                                        value="">
+                                </div>
+                            </div>
+                            <div class="flex-row">
+                                <div class="title">Название сайта</div>
+                                <div class="value">
+                                    <input name="name" id="input-name" type="text" class="form-control"
+                                        data-val-required="Укажите название сайта"
+                                        data-val-regexp="^[a-z0-9\-_]+$"
+                                        data-val-message="Название сайта может включать только маленькие латинские буквы, цифры, знак дефис и нижнее подчеркивание" 
+                                        placeholder="my-new-site" value="">
+                                </div>
+                            </div>
+                            <div class="flex-row">
+                                <div class="title">URL сайта</div>
+                                <div class="value">
+                                    <input name="url" id="input-url" type="text" class="form-control"
+                                        data-val-required="Укажите URL сайта"
+                                        data-val-regexp="^https?:\/\/([а-яa-z0-9\-_\.\/]+)$"
+                                        data-val-message="URL сайта должен начинаться с протокола http:// или https://" 
+                                        placeholder="http://my-new-site.com" value="">
+                                </div>
+                            </div>
+                            <div class="flex-row">
+                                <div class="title">Версия сайта</div>
+                                <div class="value">
+                                    <input name="version" type="text" class="form-control" 
+                                        data-val-required="Укажите версию сайта"
+                                        data-val-regexp="[0-9]+\.[0-9]+\.[0-9]"
+                                        data-val-message="Версия сайта должна быть в формате MAJOR.MINOR.BUILD. Например: 1.0.0" 
+                                        placeholder="1.0.0" value="">
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Название сайта</label>
-                            <div class="col-sm-9">
-                                <input name="name" id="input-name" type="text" class="form-control"
-                                    placeholder="my-new-site" value="">
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">Параметры GIT</div>
+                        <div class="card-body">
+                            <div class="flex-row">
+                                <div class="title">URL репозитория</div>
+                                <div class="value">
+                                    <input name="gitRepo" type="text" class="form-control"
+                                        data-val-required="Укажите URL репозитория"
+                                        data-val-regexp="^https?:\/\/"
+                                        data-val-message="URL репозитория должен начинаться с протокола http:// или https://" 
+                                        placeholder="https://github.com/user/repo.git" value="">
+                                </div>
+                            </div>
+                            <div class="flex-row">
+                                <div class="title">Пользователь</div>
+                                <div class="value">
+                                    <input name="gitUser" type="text" class="form-control" 
+                                        data-val-required="Укажите логин пользователя Git"
+                                        value="">
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">URL сайта</label>
-                            <div class="col-sm-9">
-                                <input name="url" id="input-url" type="text" class="form-control"
-                                    placeholder="http://my-new-site.com" value="">
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">Параметры сервера</div>
+                        <div class="card-body">
+                            <div class="flex-row">
+                                <div class="title">Хост</div>
+                                <div class="value">
+                                    <input name="serverHost" type="text" class="form-control" placeholder="Домен или IP" 
+                                        data-val-required="Укажите хост сервера"
+                                        value="">
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Версия сайта</label>
-                            <div class="col-sm-9">
-                                <input name="version" type="text" class="form-control" placeholder="1.0.0" value="">
+                            <div class="flex-row">
+                                <div class="title">Порт SSH</div>
+                                <div class="value">
+                                    <input name="serverPort" type="number" class="form-control" 
+                                        data-val-required="Укажите порт SSH"
+                                        data-val-regexp="^[0-9]+$"
+                                        data-val-message="Порт SSH должен содержать только цифры" 
+                                        value="">
+                                </div>
                             </div>
+                            <div class="flex-row">
+                                <div class="title">Пользователь SSH</div>
+                                <div class="value">
+                                    <input name="serverUser" type="text" class="form-control" 
+                                        data-val-required="Укажите имя пользователя SSH"
+                                        value="">
+                                </div>
+                            </div>                            
                         </div>
-                    </fieldset>
-                    <fieldset>
-                        <legend>Параметры GIT</legend>
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Адрес репозитория</label>
-                            <div class="col-sm-9">
-                                <input name="gitRepo" type="text" class="form-control"
-                                    placeholder="https://github.com/user/repo.git" value="">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Пользователь</label>
-                            <div class="col-sm-9">
-                                <input name="gitUser" type="text" class="form-control" value="">
-                            </div>
-                        </div>
-                    </fieldset>
-                    <fieldset>
-                        <legend>Параметры сервера</legend>
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Хост</label>
-                            <div class="col-sm-9">
-                                <input name="serverHost" type="text" class="form-control" placeholder="Домен или IP"
-                                    value="">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Порт SSH</label>
-                            <div class="col-sm-9">
-                                <input name="serverPort" type="text" class="form-control" value="">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Пользователь SSH</label>
-                            <div class="col-sm-9">
-                                <input name="serverUser" type="text" class="form-control" value="">
-                            </div>
-                        </div>
-                    </fieldset>
+                    </div>                    
+
                     <button class="btn btn-primary btn-submit">Продолжить</button>
                 </form>
             </div>
@@ -127,93 +156,143 @@
             <!-- siteview component -->
 
             <div id="siteview" class="component">
-                <div class="details">
-                    <h3 data-bind="name" class="site-name"></h3>
-                    <div class="site-dir text-primary" data-bind="localDir"></div>
-                    <div class="site-url text-muted" data-bind="url"></div>
-                </div>
-                <div class="actions">
-                    <button class="btn btn-edit btn-secondary">Редактировать</button>
-                    <button class="btn btn-deploy btn-info" data-not="isDeployed">Опубликовать</button>
-                    <button class="btn btn-update btn-success" data-if="isDeployed">Обновить</button>
-                </div>
-            </div>
 
+                <div class="card">
+                    <div class="card-header">Параметры сайта</div>
+                    <div class="card-body">
+                        <div class="details">                    
+                            <div class="flex-row">
+                                <div class="title">Адрес сайта</div>
+                                <div class="value">
+                                    <i class="fa fa-fw fa-link"></i>
+                                    <a class="shell-link" data-bind="url" data-bind-href="url"></a>
+                                </div>
+                            </div>                    
+                            <div class="flex-row">
+                                <div class="title">Локальная папка</div>
+                                <div class="value">
+                                    <i class="fa fa-fw fa-folder-o"></i>
+                                    <a class="shell-path" data-bind="localDir" data-bind-href="localDir"></a>
+                                </div>
+                            </div>
+                            <div class="flex-row">
+                                <div class="title">Репозиторий</div>
+                                <div class="value">
+                                    <i class="fa fa-fw fa-git"></i>
+                                    <a class="shell-link" data-bind="gitRepo" data-bind-href="gitRepo"></a>
+                                </div>
+                            </div>
+                            <div class="flex-row">
+                                <div class="title">Доступ по SSH</div>
+                                <div class="value ssh">
+                                    ssh <span data-bind="serverUser"></span>@<span data-bind="serverHost"></span> -p <span data-bind="serverPort"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
 
             <!-- deployer component -->
 
             <div id="deployer" class="component">
                 <div class="form-panel">
                     <form id="deployer-form" class="m-0">
-                        <fieldset class="mb-4">
-                            <legend>Введите пароли для публикации</legend>
-                            <div class="legend-hint text-muted">
-                                Пароли не сохраняются в целях безопасности, перед каждой публикацией их придется
-                                ввести вручную
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-4 col-form-label">
-                                    Пароль GIT для <span data-bind="gitUser"></span>:
-                                </label>
-                                <div class="col-sm-8">
-                                    <input name="gitPassword" type="password" class="form-control" value="">
+                        <div class="card">
+                            <div class="card-header">Введите пароли для публикации</div>
+                            <div class="card-body">
+                                <div class="legend-hint text-muted">
+                                    Пароли не сохраняются в целях безопасности, перед каждой публикацией их нужно вводить вручную
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-4 col-form-label">
-                                    Пароль SSH для <span data-bind="serverUser"></span>:
-                                </label>
-                                <div class="col-sm-8">
-                                    <input name="serverPassword" type="password" class="form-control" value="">
+                                <div class="flex-row">
+                                    <div class="title">
+                                        Пароль Git для <span data-bind="gitUser"></span>
+                                    </div>
+                                    <div class="value">
+                                        <input name="gitPassword" type="password" class="form-control" 
+                                            data-val-required="Введите пароль пользователя Git"
+                                            value="">
+                                    </div>
                                 </div>
+                                <div class="flex-row">
+                                    <div class="title">
+                                        Пароль SSH для <span data-bind="serverUser"></span>
+                                    </div>
+                                    <div class="value">
+                                        <input name="serverPassword" type="password" class="form-control" 
+                                            data-val-required="Введите пароль пользователя SSH"
+                                            value="">
+                                    </div>
+                                </div>                                
                             </div>
-                        </fieldset>
-                        <fieldset class="mt-4">
-                            <legend>Введите настройки сайта</legend>
-                            <div class="legend-hint text-muted">
-                                Сайт будет развернут на сервере с этими настройками<br>
-                                Имя базы, пользователя и пароль можно выдумать, они нигде заранее не прописаны.
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-4 col-form-label">Порт веб-сервера</label>
-                                <div class="col-sm-8">
-                                    <input name="HTTP_PORT" type="number" class="form-control" value="">
+                        </div>
+                        <div class="card">
+                            <div class="card-header">Параметры публикации</div>
+                            <div class="card-body">
+                                <div class="legend-hint text-muted">
+                                    Сайт будет развернут на сервере с этими настройками<br>
+                                    Имя базы, пользователя и пароль можно выдумать, они нигде заранее не прописаны.
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-4 col-form-label">Порт phpMyAdmin</label>
-                                <div class="col-sm-8">
-                                    <input name="PHPMYADMIN_PORT" type="number" class="form-control" value="">
-                                    <small class="form-text text-muted">Оставьте поле пустым, если не хотите
-                                        устанавливать phpMyAdmin</small>
+                                <div class="flex-row">
+                                    <div class="title">Порт веб-сервера</div>
+                                    <div class="value">
+                                        <input name="HTTP_PORT" type="number" class="form-control" 
+                                            data-val-required="Укажите порт веб-сервера"
+                                            data-val-regexp="^[0-9]+$"
+                                            data-val-message="Порт веб-сервера должен содержать только цифры" 
+                                            placeholder="80" value="">
+                                    </div>
                                 </div>
+                                <div class="flex-row">
+                                    <div class="title">Порт phpMyAdmin</div>
+                                    <div class="value">
+                                        <input name="PHPMYADMIN_PORT" type="number" class="form-control" 
+                                            data-val-required="Укажите порт phpMyAdmin"
+                                            data-val-regexp="^[0-9]+$"
+                                            data-val-message="Порт phpMyAdmin должен содержать только цифры" 
+                                            placeholder="8080" value="">
+                                    </div>
+                                </div>          
+                                <div class="flex-row">
+                                    <div class="title">База данных MySQL</div>
+                                    <div class="value">
+                                        <input name="MYSQL_DATABASE" type="text" class="form-control" 
+                                            data-val-required="Укажите название базы данных"
+                                            data-val-regexp="^[a-z0-9\-_]+$"
+                                            data-val-message="Название базы данных может включать только маленькие латинские буквы, цифры, знак дефис и нижнее подчеркивание" 
+                                            value="">
+                                    </div>
+                                </div>             
+                                <div class="flex-row">
+                                    <div class="title">Пользователь MySQL</div>
+                                    <div class="value">
+                                        <input name="MYSQL_USER" type="text" class="form-control" 
+                                            data-val-required="Укажите имя пользователя MySQL"
+                                            data-val-regexp="^[a-z0-9\-_]+$"
+                                            data-val-message="Имя пользователя MySQL может включать только маленькие латинские буквы, цифры, знак дефис и нижнее подчеркивание" 
+                                            value="">
+                                    </div>
+                                </div>                                                                               
+                                <div class="flex-row">
+                                    <div class="title">Пароль MySQL</div>
+                                    <div class="value">
+                                        <input name="MYSQL_PASSWORD" type="text" class="form-control" 
+                                            data-val-required="Укажите пароль пользователя MySQL"
+                                            value="">
+                                    </div>
+                                </div>                                    
+                                <div class="flex-row">
+                                    <div class="title">Пароль root MySQL</div>
+                                    <div class="value">
+                                        <input name="MYSQL_ROOT_PASSWORD" type="text" class="form-control" 
+                                            data-val-required="Укажите пароль root-пользователя MySQL"
+                                            value="">
+                                    </div>
+                                </div>                                    
                             </div>
-                            <div class="form-group row">
-                                <label class="col-sm-4 col-form-label">База данных MySQL</label>
-                                <div class="col-sm-8">
-                                    <input name="MYSQL_DATABASE" type="text" class="form-control" value="">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-4 col-form-label">Пользователь MySQL</label>
-                                <div class="col-sm-8">
-                                    <input name="MYSQL_USER" type="text" class="form-control" value="">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-4 col-form-label">Пароль MySQL</label>
-                                <div class="col-sm-8">
-                                    <input name="MYSQL_PASSWORD" type="text" class="form-control" value="">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-4 col-form-label">Пароль root MySQL</label>
-                                <div class="col-sm-8">
-                                    <input name="MYSQL_ROOT_PASSWORD" type="text" class="form-control" value="">
-                                </div>
-                            </div>
-                        </fieldset>
-                        <button class="btn btn-success btn-submit mt-2">Начать публикацию</button>
+                        </div>
+                        <button class="btn btn-success btn-submit">Начать публикацию</button>
                     </form>
                 </div>
                 <div class="log-panel">

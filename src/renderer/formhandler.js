@@ -1,3 +1,4 @@
+const { app } = require("electron");
 
 class FormHandler {
 
@@ -10,10 +11,14 @@ class FormHandler {
         this.$form = $(selector);
         this.$form.find('.btn-submit').click((e) => {
             e.preventDefault();
+            this.$form.submit();
+        });
+        this.$form.submit((e) => {
+            e.preventDefault();
             if (this.isLoading) {
                 return;
             }
-            if (callback) {
+            if (callback && this.validate()) {
                 callback(this.getValues(), this);
             }
         });
@@ -54,8 +59,43 @@ class FormHandler {
         return values;
     }
 
+    validate() {
+        let isValid = true;
+        
+        this.$form.find('input[data-val-required]').each((i, input) => {
+            if (!isValid){ return; }
+            const $input = $(input);
+            const message = $input.attr('data-val-required');
+            const value = $input.val();
+            if (!value){
+                window.app.alert(message, 'warning');
+                isValid = false;
+            }
+        });
+
+        if (isValid){
+            this.$form.find('input[data-val-regexp]').each((i, input) => {
+                if (!isValid){ return; }
+                const $input = $(input);
+                const regexp = $input.attr('data-val-regexp');
+                const value = $input.val();
+                isValid = new RegExp(regexp).test(value);
+                if (!isValid){
+                    const message = $input.attr('data-val-message');
+                    window.app.alert(message, 'warning');
+                }
+            });
+        }
+
+        return isValid;
+    }
+
     setCallback(callback) {
         this.callback = callback;
+    }
+
+    submit() {
+        this.$form.submit();
     }
 
     hide() {

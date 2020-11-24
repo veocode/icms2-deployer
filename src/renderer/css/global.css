@@ -7,12 +7,48 @@ html, body {
     height:100%;
 }
 
+a {
+    color:#3498db;
+}
+
+a:hover {
+    color:#2c3e50;
+}
+
 .static-ui {
     user-select: none;
 }
 
 input::placeholder {
     color: #ced6e0 !important;
+}
+
+.flex-row {
+    display: flex;
+    height: 30px;
+    line-height: 30px;
+}
+
+form .flex-row {
+    height: 40px;
+    line-height: 40px;
+}
+
+.flex-row .fa {
+    color: #8395a7;
+}
+
+.flex-row .title {
+    width:200px;
+    font-weight: bold;
+}
+
+.flex-row .value {
+    flex: 1 1;
+}
+
+form .card {
+    margin-bottom: 20px;
 }
 
 .header{
@@ -40,6 +76,22 @@ input::placeholder {
     font-size: 21px;
 }
 
+.header .toolbar .btn {
+    height:36px;
+    min-width: 64px;
+    margin-left:4px;
+}
+
+.header .toolbar .btn .fa+span {
+    padding-left:5px;
+}
+
+.header .toolbar .spacer {
+    display:inline-block;
+    height:1px;
+    width:10px;
+}
+
 .workspace {
     position:relative;
     height: calc(100vh - 75px);
@@ -62,14 +114,6 @@ input::placeholder {
 
 #btn-select-dir {
     margin-left:10px;
-}
-
-#site-form legend {
-    margin-bottom:20px;
-}
-
-#site-form .btn-submit {
-    margin-top:20px;
 }
 
 .form-wait {
@@ -168,8 +212,12 @@ input::placeholder {
     margin-top:40px;
 }
 
+#siteview .details .ssh {
+    font-family: 'Ubuntu Mono', monospace;
+}
+
 #siteview .actions {
-    margin-top:40px;
+    margin-top:20px;
 }
 
 #deployer .col-form-label span[data-bind] {
@@ -252,6 +300,5 @@ input::placeholder {
 
 #deployer .terminal .line-exec {
     color: #00c4ff;
-    /* font-weight: bold; */
     margin-top:5px;
 }

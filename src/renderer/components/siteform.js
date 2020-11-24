@@ -45,6 +45,21 @@ class SiteForm extends Component {
         const title = site.id ? 'Редактировать сайт' : 'Добавить сайт';
         this.app.setTitle(title, 'sitelist');
         this.form.setValues(site);
+        this.app.setToolbar([{
+            hint: 'Сохранить',
+            icon: 'check',
+            class: 'success',
+            click: () => {
+                this.form.submit();
+            }
+        }, {
+            hint: 'Отменить',
+            icon: 'times',
+            class: 'danger',
+            click: () => {
+                this.app.stepBack();
+            }
+        }]);
     }
 
     onDeactivation() {
