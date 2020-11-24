@@ -6,7 +6,6 @@ const Validator = require('../validator');
 class Deployer extends Component {
 
     site;
-    siteToDeploy;
 
     $formPanel = this.$dom('.form-panel');
     $logPanel = this.$dom('.log-panel');
@@ -44,7 +43,7 @@ class Deployer extends Component {
         this.$logPanel.hide();
         this.$log.empty();
         this.$terminal.empty().html('');
-        this.credentialsForm.setValues(this.app.config.get('defaultDeployConfig', {}));
+        this.credentialsForm.setValues(this.app.config.get('defaultSite').config);
         this.app.setTitle('Публикация сайта', 'siteview', this.site);
     }
 
@@ -57,24 +56,22 @@ class Deployer extends Component {
         this.$formPanel.hide();
         this.$logPanel.show();
 
-        this.siteToDeploy = { ...this.site };
-
-        this.siteToDeploy.gitPassword = credentials.gitPassword;
-        this.siteToDeploy.serverPassword = credentials.serverPassword;
+        this.site.gitPassword = credentials.gitPassword;
+        this.site.serverPassword = credentials.serverPassword;
 
         delete credentials.gitPassword;
         delete credentials.serverPassword;
 
-        this.siteToDeploy.config = credentials;
-        this.siteToDeploy.config.PHPMYADMIN_INSTALL = 'y';
+        this.site.config = credentials;
+        this.site.config.PHPMYADMIN_INSTALL = 'y';
 
         if (!credentials.PHPMYADMIN_PORT) {
-            this.siteToDeploy.config.PHPMYADMIN_INSTALL = 'n';
-            this.siteToDeploy.config.PHPMYADMIN_PORT = 8080;
+            this.site.config.PHPMYADMIN_INSTALL = 'n';
+            this.site.config.PHPMYADMIN_PORT = 8080;
         }
 
         this.deployService.start({
-            site: this.siteToDeploy,
+            site: this.site,
             onLog: (logMessage) => {
                 this.log(logMessage);
             },
@@ -90,15 +87,16 @@ class Deployer extends Component {
         if (isSuccess) {
             this.site.isDeployed = true;
             this.site.deployedAt = Date.now();
-            this.app.saveUpdatedSite(this.site);
 
             let url = `http://${this.site.serverHost}`;
-            if (this.siteToDeploy.config.HTTP_PORT != 80) {
-                url += `:${this.siteToDeploy.config.HTTP_PORT}`;
+            if (this.site.config.HTTP_PORT != 80) {
+                url += `:${this.site.config.HTTP_PORT}`;
             }
             url += '/';
             this.log({ text: `Готово! Ваш сайт: <a class="shell-link" href="${url}">${url}</a>`, type: 'done' });
         }
+
+        this.app.saveUpdatedSite(this.site);
     }
 
     log(message) {

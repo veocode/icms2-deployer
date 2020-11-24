@@ -12,10 +12,16 @@ class MainProcessWorker {
     }
 
     createMainWindow() {
+
+        const width = 850;
+        const height = 600;
+
         const win = new BrowserWindow({
             show: false,
-            width: 900,
-            height: 650,
+            width: width,
+            minWidth: width,
+            height: height,
+            minHeight: height,
             webPreferences: {
                 nodeIntegration: true,
                 enableRemoteModule: true

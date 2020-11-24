@@ -29,6 +29,11 @@ class SiteView extends Component {
                 this.app.confirm('Вы хотите удалить сайт?\nЭто действие нельзя будет отменить', () => {
                     this.app.deleteSite(this.site);
                     this.app.stepBack();
+                    this.app.toast({
+                        type: 'success',
+                        message: `Сайт удалён`,
+                        timeout: 1.5,
+                    });
                 });
             }
         };
@@ -60,6 +65,10 @@ class SiteView extends Component {
 
     onDeactivation() {
 
+    }
+
+    getConnectionCommand() {
+        return `ssh ${this.site.serverUser}@${this.site.serverHost} -p${this.site.serverPort}`;
     }
 
 }

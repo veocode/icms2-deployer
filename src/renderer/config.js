@@ -17,16 +17,16 @@ class Config {
             serverHost: '134.209.26.140',
             serverPort: '22',
             serverUser: 'root',
+            config: {
+                HTTP_PORT: 80,
+                PHPMYADMIN_PORT: 8080,
+                MYSQL_DATABASE: 'icmsdb',
+                MYSQL_USER: 'icmsdb',
+                MYSQL_PASSWORD: 'secret',
+                MYSQL_ROOT_PASSWORD: 'rootsecret',
+                PHPMYADMIN_INSTALL: 'y'
+            }
         },
-        'defaultDeployConfig': {
-            HTTP_PORT: 80,
-            MYSQL_DATABASE: 'icmsdb',
-            MYSQL_USER: 'icmsdb',
-            MYSQL_PASSWORD: 'secret',
-            MYSQL_ROOT_PASSWORD: 'rootsecret',
-            PHPMYADMIN_INSTALL: 'y',
-            PHPMYADMIN_PORT: 8001,
-        }
     };
 
     constructor() {

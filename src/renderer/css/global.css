@@ -1,10 +1,12 @@
 @import "bootstrap.css";
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap');
 
 
 html, body {
     width:100%;
     height:100%;
+    font-family: 'Ubuntu';
 }
 
 a {
@@ -19,8 +21,23 @@ a:hover {
     user-select: none;
 }
 
+.selectable-ui {
+    user-select: text;
+}
+
+.click-to-copy:hover {
+    cursor: pointer;
+    background: #fcfbdd;
+    box-shadow: 0 0 15px #fcfbdd;;
+}
+
 input::placeholder {
     color: #ced6e0 !important;
+}
+
+.card-header {
+    font-weight: lighter;
+    color: #999;
 }
 
 .flex-row {
@@ -30,24 +47,25 @@ input::placeholder {
 }
 
 form .flex-row {
-    height: 40px;
-    line-height: 40px;
+    height: 42px;
+    line-height: 42px;
 }
 
 .flex-row .fa {
-    color: #8395a7;
+    color: #c1d1e0;
+    margin-right: 5px;
 }
 
 .flex-row .title {
-    width:200px;
-    font-weight: bold;
+    width: 220px;
+    color: #2c3e50;
 }
 
 .flex-row .value {
     flex: 1 1;
 }
 
-form .card {
+.component .card {
     margin-bottom: 20px;
 }
 

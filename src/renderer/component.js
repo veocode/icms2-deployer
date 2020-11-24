@@ -1,3 +1,5 @@
+const { TouchBarScrubber } = require("electron");
+
 class Component {
 
     $container;
@@ -16,22 +18,35 @@ class Component {
         return this.$container.find(selector);
     }
 
-    bind(data, $rootElement) {
+    bind(data, $rootElement, prefix) {
+        prefix = prefix || '';
         const bindableAttrs = ['href', 'title', 'class', 'value'];
+        const component = this;
         if (!$rootElement) {
             $rootElement = this.$container;
         }
         Object.keys(data).forEach((fieldName) => {
             const value = data[fieldName];
-            $rootElement.find(`[data-bind=${fieldName}]`).html(value);
-            bindableAttrs.forEach((attrName) => $rootElement.find(`[data-bind-${attrName}=${fieldName}]`).attr(attrName, value));
+            const fieldPath = prefix + fieldName;
+            $rootElement.find(`[data-bind="${fieldPath}"]`).html(value);
+            bindableAttrs.forEach((attrName) => $rootElement.find(`[data-bind-${attrName}="${fieldPath}"]`).attr(attrName, value));
             if (value) {
-                $rootElement.find(`[data-if=${fieldName}]`).show();
-                $rootElement.find(`[data-not=${fieldName}]`).hide();
+                $rootElement.find(`[data-if="${fieldPath}"]`).show();
+                $rootElement.find(`[data-not="${fieldPath}"]`).hide();
             }
             if (!value) {
-                $rootElement.find(`[data-not=${fieldName}]`).show();
-                $rootElement.find(`[data-if=${fieldName}]`).hide();
+                $rootElement.find(`[data-not="${fieldPath}"]`).show();
+                $rootElement.find(`[data-if="${fieldPath}"]`).hide();
+            }
+            if (typeof value === 'object') {
+                this.bind(value, $rootElement, fieldName + '.');
+            }
+        });
+        $rootElement.find(`[data-method]`).each((i, item) => {
+            const $item = $(item);
+            const methodName = $item.attr('data-method');
+            if (component[methodName] && typeof component[methodName] === 'function') {
+                $item.html(component[methodName].call(component));
             }
         });
     }
@@ -60,10 +75,10 @@ class Component {
     activate(params) {
         this.$container.show();
         this.setCallback(null);
+        this.onActivation(params);
         if (params) {
             this.bind(params);
         }
-        this.onActivation(params);
     }
 
     deactivate() {

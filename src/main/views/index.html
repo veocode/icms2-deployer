@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <title></title>
         <script src="https://use.fontawesome.com/9c28b8c4ea.js"></script>
+        <link href="../../renderer/css/bootoast.css" rel="stylesheet" media="all" />
         <link href="../../renderer/css/global.css" rel="stylesheet" media="all" />
     </head>
 
@@ -152,7 +153,7 @@
 
                 <div id="siteview" class="component">
 
-                    <div class="card">
+                    <div class="card site-details">
                         <div class="card-header">Параметры сайта</div>
                         <div class="card-body">
                             <div class="details">
@@ -179,9 +180,62 @@
                                 </div>
                                 <div class="flex-row">
                                     <div class="title">Доступ по SSH</div>
-                                    <div class="value ssh">
-                                        ssh <span data-bind="serverUser"></span>@<span data-bind="serverHost"></span> -p
-                                        <span data-bind="serverPort"></span>
+                                    <div class="value">
+                                        <i class="fa fa-fw fa-desktop"></i>
+                                        <span data-method="getConnectionCommand" class="click-to-copy"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card config-details">
+                        <div class="card-header">Параметры публикации</div>
+                        <div class="card-body" data-not="isDeployed">
+                            <div class="text-muted">Сайт не опубликован, параметры не заданы</div>
+                        </div>
+                        <div class="card-body" data-if="isDeployed">
+                            <div class="details">
+                                <div class="flex-row">
+                                    <div class="title">База данных MySQL</div>
+                                    <div class="value">
+                                        <i class="fa fa-fw fa-database"></i>
+                                        <span data-bind="config.MYSQL_DATABASE" class="click-to-copy"></span>
+                                    </div>
+                                </div>
+                                <div class="flex-row">
+                                    <div class="title">Пользователь MySQL</div>
+                                    <div class="value">
+                                        <i class="fa fa-fw fa-user"></i>
+                                        <span data-bind="config.MYSQL_USER" class="click-to-copy"></span>
+                                    </div>
+                                </div>
+                                <div class="flex-row">
+                                    <div class="title">Пароль MySQL</div>
+                                    <div class="value">
+                                        <i class="fa fa-fw fa-key"></i>
+                                        <span data-bind="config.MYSQL_PASSWORD" class="click-to-copy"></span>
+                                    </div>
+                                </div>
+                                <div class="flex-row">
+                                    <div class="title">Пароль root MySQL</div>
+                                    <div class="value">
+                                        <i class="fa fa-fw fa-key"></i>
+                                        <span data-bind="config.MYSQL_ROOT_PASSWORD" class="click-to-copy"></span>
+                                    </div>
+                                </div>
+                                <div class="flex-row">
+                                    <div class="title">Порт веб-сервера</div>
+                                    <div class="value">
+                                        <i class="fa fa-fw fa-plug"></i>
+                                        <span data-bind="config.HTTP_PORT" class="click-to-copy"></span>
+                                    </div>
+                                </div>
+                                <div class="flex-row">
+                                    <div class="title">Порт phpMyAdmin</div>
+                                    <div class="value">
+                                        <i class="fa fa-fw fa-plug"></i>
+                                        <span data-bind="config.PHPMYADMIN_PORT" class="click-to-copy"></span>
                                     </div>
                                 </div>
                             </div>
@@ -199,7 +253,8 @@
                                 <div class="card-header">Введите пароли для публикации</div>
                                 <div class="card-body">
                                     <div class="legend-hint text-muted">
-                                        Пароли не сохраняются в целях безопасности, перед каждой публикацией их нужно
+                                        Пароли не сохраняются в целях безопасности, перед каждой публикацией их
+                                        нужно
                                         вводить вручную
                                     </div>
                                     <div class="flex-row">
@@ -226,7 +281,8 @@
                                 <div class="card-header">Параметры публикации</div>
                                 <div class="card-body">
                                     <div class="legend-hint text-muted">
-                                        Сайт будет развернут на сервере с этими настройками<br> Имя базы, пользователя и
+                                        Сайт будет развернут на сервере с этими настройками<br> Имя базы,
+                                        пользователя и
                                         пароль можно выдумать, они нигде заранее не прописаны.
                                     </div>
                                     <div class="flex-row">
@@ -312,6 +368,7 @@
             }
         </script>
         <script src="../../renderer/libs/jquery.js"></script>
+        <script src="../../renderer/libs/bootoast.js"></script>
         <script src="../../renderer/app.js"></script>
     </body>
 

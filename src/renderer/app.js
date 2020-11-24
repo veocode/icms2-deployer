@@ -3,7 +3,9 @@ const path = require('path');
 const fs = require('fs');
 const remote = require('electron').remote;
 const shell = require('electron').shell;
-var Config = require('./../../renderer/config');
+const clipboard = require('electron').clipboard;
+
+const Config = require('./../../renderer/config');
 
 
 class App {
@@ -71,6 +73,23 @@ class App {
             const $link = $(e.target);
             shell.openPath($link.attr('href'));
         });
+        $('.click-to-copy').on('click', (e) => {
+            const text = $(e.target).text();
+            clipboard.writeText(text);
+            this.toast({
+                message: `Скопировано: ${text}`,
+                timeout: 1,
+                dismissible: false
+            });
+        });
+    }
+
+    toast(options) {
+        bootoast.toast(options);
+    }
+
+    initDynamicControls() {
+        $('.click-to-copy').attr('title', 'Нажмите, чтобы скопировать');
     }
 
     makeComponent(componentName) {
@@ -133,6 +152,7 @@ class App {
         if (callback) {
             component.setCallback(callback);
         }
+        this.initDynamicControls();
         this.currentComponent = componentName;
     }
 
@@ -180,6 +200,11 @@ class App {
         const defaultSite = this.config.get('defaultSite', {});
         this.view('siteform', defaultSite, (site) => {
             this.saveAddedSite(site);
+            this.toast({
+                type: 'success',
+                message: `Сайт успешно добавлен`,
+                timeout: 1.5,
+            });
         });
     }
 
@@ -187,6 +212,11 @@ class App {
         this.view('siteform', site, (updatedSite) => {
             this.saveUpdatedSite(updatedSite);
             this.stepBack();
+            this.toast({
+                type: 'success',
+                message: `Изменения сохранены`,
+                timeout: 1.5,
+            });
         });
     }
 
