@@ -1,4 +1,5 @@
 const Component = require('../component');
+const moment = require('moment');
 
 class SiteView extends Component {
 
@@ -69,6 +70,22 @@ class SiteView extends Component {
 
     getConnectionCommand() {
         return `ssh ${this.site.serverUser}@${this.site.serverHost} -p${this.site.serverPort}`;
+    }
+
+    getDeployStatus() {
+        if (this.site.isDeployed) {
+            const date = moment(this.site.deployedAt).locale('ru').calendar();
+            return `<span>${date}</span>`;
+        }
+        return `<span class="text-muted">Сайт не опубликован</span>`;
+    }
+
+    getUpdateStatus() {
+        if (this.site.updatedAt) {
+            const date = moment(this.site.updatedAt).locale('ru').calendar();
+            return `<span>${date}</span>`;
+        }
+        return `<span class="text-muted">Сайт не обновлялся</span>`;
     }
 
 }

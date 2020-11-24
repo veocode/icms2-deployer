@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "electron": "^10.1.5",
+    "moment": "^2.29.1",
     "ssh2": "^0.8.9",
     "ssh2-connect": "^3.0.0",
     "ssh2-exec": "^0.5.3"

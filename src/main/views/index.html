@@ -30,7 +30,7 @@
                 <div id="sitelist" class="component">
                     <ul class="list">
                         <li class="site" data-template="list-item">
-                            <div class="name" data-bind="name"></div>
+                            <div class="name text-primary" data-bind="name"></div>
                             <div class="url" data-bind="url"></div>
                             <div class="status">
                                 <div class="deployed text-success" data-if="isDeployed">Опубликован</div>
@@ -153,8 +153,35 @@
 
                 <div id="siteview" class="component">
 
+                    <div class="card site-status">
+                        <div class="card-body">
+                            <div class="details">
+                                <div class="flex-row">
+                                    <div class="title">Версия</div>
+                                    <div class="value">
+                                        <i class="fa fa-fw fa-dot-circle-o"></i>
+                                        <span data-bind="version" class="click-to-copy"></span>
+                                    </div>
+                                </div>
+                                <div class="flex-row">
+                                    <div class="title">Дата публикации</div>
+                                    <div class="value">
+                                        <i class="fa fa-fw fa-calendar"></i>
+                                        <span data-method="getDeployStatus"></span>
+                                    </div>
+                                </div>
+                                <div class="flex-row">
+                                    <div class="title">Последнее обновление</div>
+                                    <div class="value">
+                                        <i class="fa fa-fw fa-calendar"></i>
+                                        <span data-method="getUpdateStatus"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="card site-details">
-                        <div class="card-header">Параметры сайта</div>
                         <div class="card-body">
                             <div class="details">
                                 <div class="flex-row">

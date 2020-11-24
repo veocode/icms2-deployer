@@ -96,6 +96,7 @@ class Deployer extends Component {
             this.log({ text: `Готово! Ваш сайт: <a class="shell-link" href="${url}">${url}</a>`, type: 'done' });
         }
 
+        delete this.site.gitRepoFull;
         this.app.saveUpdatedSite(this.site);
     }
 
