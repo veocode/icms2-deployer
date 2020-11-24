@@ -32,6 +32,9 @@
                         <li class="site" data-template="list-item">
                             <div class="name text-primary" data-bind="name"></div>
                             <div class="url" data-bind="url"></div>
+                            <div class="version">
+                                <span class="badge badge-dark" data-bind="version"></span>
+                            </div>
                             <div class="status">
                                 <div class="deployed text-success" data-if="isDeployed">Опубликован</div>
                                 <div class="not-deployed text-secondary" data-not="isDeployed">Не опубликован</div>
