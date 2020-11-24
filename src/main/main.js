@@ -22,7 +22,7 @@ class MainProcessWorker {
 			}
 		});
 
-		// win.setMenu(null);
+		win.setMenu(null);
 
 		win.once('ready-to-show', () => {
 			win.show()

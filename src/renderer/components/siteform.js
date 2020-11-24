@@ -11,7 +11,7 @@ class SiteForm extends Component {
         validator.validateSite(values, (isValid, error) => {
             form.endLoading();
             if (!isValid) {
-                alert(error);
+                this.app.alert(error, 'warning');
                 return;
             }
             this.result(values);

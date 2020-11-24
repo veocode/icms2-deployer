@@ -28,25 +28,32 @@ class TaskRunnerService {
         this.runNextTask();
     }
 
-    initServices() {        
+    initServices() {
         this.shellService.execCallback = (line) => {
-            this.log('$ ' + line, 'exec');
+            this.log('$ ' + this.stripPasswords(line), 'exec');
         };
         this.shellService.stdoutCallback = (line) => {
-            this.log(line, 'stdout');
+            this.log(this.stripPasswords(line), 'stdout');
         };
         this.shellService.stderrCallback = (line) => {
-            this.log(line, 'stderr');
+            this.log(this.stripPasswords(line), 'stderr');
         }
         this.sshService.execCallback = (line) => {
-            this.log('$ ' + line, 'exec');
-        };        
+            this.log('$ ' + this.stripPasswords(line), 'exec');
+        };
         this.sshService.stdoutCallback = (line) => {
-            this.log(line, 'stdout');
+            this.log(this.stripPasswords(line), 'stdout');
         };
         this.sshService.stderrCallback = (line) => {
-            this.log(line, 'stderr');
-        }        
+            this.log(this.stripPasswords(line), 'stderr');
+        }
+    }
+
+    stripPasswords(text) {
+        // if (this.site.gitPassword) {
+        //     text = text.replace(this.site.gitPassword, '***');
+        // }
+        return text;
     }
 
     log(text, type) {
@@ -70,7 +77,7 @@ class TaskRunnerService {
 
     done() {
         this.sshService.close();
-        this.onDone(true);        
+        this.onDone(true);
     }
 
     runNextTask() {

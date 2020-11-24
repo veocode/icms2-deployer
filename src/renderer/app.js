@@ -13,6 +13,8 @@ class App {
     // Application Properties
     //
 
+    title = "InstantCMS 2 - Мастер публикации";
+
     components = [
         'sitelist',
         'siteform',
@@ -40,6 +42,7 @@ class App {
     //
 
     start() {
+        $('title').text(this.title);
         this.initComponents();
         this.view(this.defaultComponent);
     }
@@ -92,6 +95,16 @@ class App {
             if (!result.canceled && result.filePaths[0]) {
                 callback(result.filePaths[0]);
             }
+        });
+    }
+
+    alert(message, type, title) {
+        type = type || "info";
+        title = title || this.title;
+        remote.dialog.showMessageBox(null, {
+            type: type,
+            title: title,
+            message: message
         });
     }
 

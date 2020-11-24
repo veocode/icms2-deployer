@@ -19,9 +19,9 @@ class DeployService extends TaskRunnerService {
     }
 
     onStart(options) {
-        this.site.gitRepoFull = this.gitService.getRepoUrlWithCredentials(this.site.gitRepo, this.site.gitUser, this.site.gitPassword);                
+        this.site.gitRepoFull = this.gitService.getRepoUrlWithCredentials(this.site.gitRepo, this.site.gitUser, this.site.gitPassword);
         this.site.serverDir = this.serverSiteRoot + '/' + this.site.name;
-    }    
+    }
 
     //
     // Task Handlers
@@ -37,13 +37,15 @@ class DeployService extends TaskRunnerService {
             if (err) {
                 this.hint('Локальный репозиторий не найден');
 
-                this.log('Создаем локальный Git-репозиторий...');                
+                this.log('Создаем локальный Git-репозиторий...');
                 let commands = [
                     'git init',
                     'git add .',
                     'git commit -am "init"',
                     `git remote add origin ${this.site.gitRepoFull}`,
-                    `git push -u origin master`
+                    `git push -u origin master`,
+                    `git tag v${this.site.version}`,
+                    `git push origin v${this.site.version}`
                 ];
                 this.shellService.execMany(commands, this.site.localDir, (err) => {
                     if (err) {
@@ -102,7 +104,7 @@ class DeployService extends TaskRunnerService {
             }
             this.runNextTask();
         });
-    }    
+    }
 
     serverCheckoutICMSDocker() {
         this.log(`Клонируем icms2-docker в папку сайта...`);
@@ -145,7 +147,7 @@ class DeployService extends TaskRunnerService {
 
     serverInstallICMS() {
         this.log(`Инициализируем icms2-docker...`);
-        
+
         let command = `./init.sh deploy ${this.site.gitRepoFull} --skip-wizard`;
 
         if (this.site.config.PHPMYADMIN_PORT) {

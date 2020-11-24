@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>InstantCMS 2 - Мастер публикации</title>
+    <title></title>
     <script src="https://use.fontawesome.com/9c28b8c4ea.js"></script>
     <link href="../../renderer/css/global.css" rel="stylesheet" media="all" />
 </head>
@@ -63,13 +63,21 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Название сайта</label>
                             <div class="col-sm-9">
-                                <input name="name" id="input-name" type="text" class="form-control" value="">
+                                <input name="name" id="input-name" type="text" class="form-control"
+                                    placeholder="my-new-site" value="">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">URL сайта</label>
                             <div class="col-sm-9">
-                                <input name="url" id="input-url" type="text" class="form-control" value="">
+                                <input name="url" id="input-url" type="text" class="form-control"
+                                    placeholder="http://my-new-site.com" value="">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Версия сайта</label>
+                            <div class="col-sm-9">
+                                <input name="version" type="text" class="form-control" placeholder="1.0.0" value="">
                             </div>
                         </div>
                     </fieldset>
@@ -78,7 +86,8 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Адрес репозитория</label>
                             <div class="col-sm-9">
-                                <input name="gitRepo" type="text" class="form-control" value="">
+                                <input name="gitRepo" type="text" class="form-control"
+                                    placeholder="https://github.com/user/repo.git" value="">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -91,9 +100,10 @@
                     <fieldset>
                         <legend>Параметры сервера</legend>
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Адрес IP</label>
+                            <label class="col-sm-3 col-form-label">Хост</label>
                             <div class="col-sm-9">
-                                <input name="serverHost" type="text" class="form-control" value="">
+                                <input name="serverHost" type="text" class="form-control" placeholder="Домен или IP"
+                                    value="">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -174,9 +184,10 @@
                                 <label class="col-sm-4 col-form-label">Порт phpMyAdmin</label>
                                 <div class="col-sm-8">
                                     <input name="PHPMYADMIN_PORT" type="number" class="form-control" value="">
-                                    <small class="form-text text-muted">Оставьте поле пустым, если не хотите устанавливать phpMyAdmin</small>
-                                </div>                                    
-                            </div>                                
+                                    <small class="form-text text-muted">Оставьте поле пустым, если не хотите
+                                        устанавливать phpMyAdmin</small>
+                                </div>
+                            </div>
                             <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">База данных MySQL</label>
                                 <div class="col-sm-8">
@@ -194,7 +205,7 @@
                                 <div class="col-sm-8">
                                     <input name="MYSQL_PASSWORD" type="text" class="form-control" value="">
                                 </div>
-                            </div>                            
+                            </div>
                             <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">Пароль root MySQL</label>
                                 <div class="col-sm-8">
@@ -202,19 +213,19 @@
                                 </div>
                             </div>
                         </fieldset>
-                        <button class="btn btn-success btn-submit mt-2">Начать публикацию</button>                        
+                        <button class="btn btn-success btn-submit mt-2">Начать публикацию</button>
                     </form>
                 </div>
                 <div class="log-panel">
-                    <div class="log-view">                        
+                    <div class="log-view">
                         <ul class="log">
                             <li></li>
                         </ul>
                         <button class="btn btn-primary btn-done mt-4" style="display: none">Продолжить</button>
-                    </div>   
+                    </div>
                     <div class="terminal-view">
-                        <div class="terminal"></div>                        
-                    </div>                    
+                        <div class="terminal"></div>
+                    </div>
                 </div>
             </div>
 

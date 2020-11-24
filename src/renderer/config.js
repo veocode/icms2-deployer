@@ -11,9 +11,10 @@ class Config {
             name: '',
             url: '',
             localDir: '',
+            version: '1.0.0',
             gitRepo: 'https://github.com/veocode/testrepo.git',
             gitUser: 'veocode',
-            serverHost: '167.99.82.3',
+            serverHost: '134.209.26.140',
             serverPort: '22',
             serverUser: 'root',
         },
@@ -24,7 +25,7 @@ class Config {
             MYSQL_PASSWORD: 'secret',
             MYSQL_ROOT_PASSWORD: 'rootsecret',
             PHPMYADMIN_INSTALL: 'y',
-            PHPMYADMIN_PORT: 8080,
+            PHPMYADMIN_PORT: 8001,
         }
     };
 

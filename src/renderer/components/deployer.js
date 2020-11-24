@@ -13,7 +13,7 @@ class Deployer extends Component {
     $terminal = this.$dom('.terminal');
     $terminalView = this.$dom('.terminal-view');
 
-    deployService = require('../services/deploy');    
+    deployService = require('../services/deploy');
 
     credentialsForm = new FormHandler('#deployer form', (credentials, form) => {
         form.startLoading();
@@ -21,7 +21,7 @@ class Deployer extends Component {
         validator.validateCredentials(this.site, credentials, (isValid, error) => {
             form.endLoading();
             if (!isValid) {
-                alert(error);
+                this.app.alert(error, 'warning');
                 return;
             }
             this.deploy(credentials);
@@ -43,7 +43,7 @@ class Deployer extends Component {
         this.$log.empty();
         this.$terminal.empty().html('');
         this.credentialsForm.setValues(this.app.config.get('defaultDeployConfig', {}));
-        this.app.setTitle('Публикация сайта', 'siteview', this.site);        
+        this.app.setTitle('Публикация сайта', 'siteview', this.site);
     }
 
     onDeactivation() {
@@ -64,11 +64,11 @@ class Deployer extends Component {
         delete credentials.serverPassword;
 
         siteToDeploy.config = credentials;
-        siteToDeploy.config.PHPMYADMIN_INSTALL = 'y'; 
-        
+        siteToDeploy.config.PHPMYADMIN_INSTALL = 'y';
+
         if (!credentials.PHPMYADMIN_PORT) {
-            siteToDeploy.config.PHPMYADMIN_INSTALL = 'n'; 
-            siteToDeploy.config.PHPMYADMIN_PORT = 8080; 
+            siteToDeploy.config.PHPMYADMIN_INSTALL = 'n';
+            siteToDeploy.config.PHPMYADMIN_PORT = 8080;
         }
 
         this.deployService.start({
@@ -82,7 +82,7 @@ class Deployer extends Component {
         });
     }
 
-    done(isSuccess){
+    done(isSuccess) {
         this.$btnDone.show();
 
         if (isSuccess) {
@@ -91,11 +91,11 @@ class Deployer extends Component {
             this.app.saveUpdatedSite(this.site);
 
             let url = `http://${this.site.serverHost}`;
-            if (this.site.serverPort != 80){
+            if (this.site.serverPort != 80) {
                 url += `:${this.site.serverPort}`;
             }
             url += '/';
-            this.log({text: `Готово! Ваш сайт: <a href="${url}">${url}</a>`})            
+            this.log({ text: `Готово! Ваш сайт: <a href="${url}">${url}</a>`, type: 'done' });
         }
     }
 
