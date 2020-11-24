@@ -14,7 +14,7 @@ class MainProcessWorker {
     createMainWindow() {
 
         const width = 850;
-        const height = 600;
+        const height = 650;
 
         const win = new BrowserWindow({
             show: false,
@@ -28,7 +28,7 @@ class MainProcessWorker {
             }
         });
 
-        // win.setMenu(null);
+        win.setMenu(null);
 
         win.once('ready-to-show', () => {
             win.show()

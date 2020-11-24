@@ -33,7 +33,8 @@ class App {
     dom = {
         $title: $('.header .title'),
         $toolbar: $('.header .toolbar'),
-        $backBtn: $('.nav-back .btn')
+        $backBtn: $('.nav-back .btn'),
+        $workspace: $('.workspace')
     }
 
     componentInstances = {};
@@ -63,6 +64,8 @@ class App {
     }
 
     initControls() {
+        this.dom.$workspace.scrollbar();
+
         $('a.shell-link').on('click', (e) => {
             e.preventDefault();
             const $link = $(e.target);
@@ -73,6 +76,7 @@ class App {
             const $link = $(e.target);
             shell.openPath($link.attr('href'));
         });
+
         $('.click-to-copy').on('click', (e) => {
             const text = $(e.target).text();
             clipboard.writeText(text);

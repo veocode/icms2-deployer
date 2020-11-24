@@ -1,12 +1,13 @@
 @import "bootstrap.css";
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap');
-
+@import "bootoast.css";
+@import "scrollbar.css";
+@import "fonts.css";
 
 html, body {
     width:100%;
     height:100%;
     font-family: 'Ubuntu';
+    -webkit-font-smoothing: antialiased;    
 }
 
 a {
@@ -15,6 +16,10 @@ a {
 
 a:hover {
     color:#2c3e50;
+}
+
+.btn, .form-control {
+    transition: all 0.2s;
 }
 
 .static-ui {
@@ -54,6 +59,11 @@ form .flex-row {
 .flex-row .fa {
     color: #c1d1e0;
     margin-right: 5px;
+}
+
+.flex-row .fa-version {
+    font-family: 'Ubuntu';
+    font-weight: bold;
 }
 
 .flex-row .title {
@@ -114,11 +124,11 @@ form .flex-row {
     position:relative;
     height: calc(100vh - 75px);
     overflow-y: auto;
+    background:#f1f2f6;
 }
 
-.workspace{
-    padding:20px;
-    background:#f1f2f6;
+.workspace .components {
+    padding:20px;    
 }
 
 .component {
@@ -214,12 +224,11 @@ form .flex-row {
     position: absolute;
     bottom:0;
     padding:10px 15px;
-    font-weight: bold;
 }
 
 #sitelist .list li .status {
     left:0;
-    font-size:12px;
+    font-size:14px;
 }
 
 #sitelist .list li .version {

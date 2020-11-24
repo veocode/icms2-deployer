@@ -1,19 +1,27 @@
 {
   "name": "icms2-deployer",
-  "version": "1.0.0",
+  "version": "0.1.0",
+  "author": "veocode",
   "description": "",
   "main": "src/main/main.js",
+  "build": {
+    "appId": "ru.veocode.icms2-deployer"
+  },
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "keywords": [],
-  "author": "",
   "license": "ISC",
   "dependencies": {
-    "electron": "^10.1.5",
     "moment": "^2.29.1",
     "ssh2": "^0.8.9",
     "ssh2-connect": "^3.0.0",
     "ssh2-exec": "^0.5.3"
+  },
+  "devDependencies": {
+    "electron": "^10.1.5",
+    "electron-builder": "^22.9.1"
   }
 }

@@ -1,29 +1,30 @@
 <html>
 
-    <head>
-        <meta charset="UTF-8">
-        <title></title>
-        <script src="https://use.fontawesome.com/9c28b8c4ea.js"></script>
-        <link href="../../renderer/css/bootoast.css" rel="stylesheet" media="all" />
-        <link href="../../renderer/css/global.css" rel="stylesheet" media="all" />
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="https://use.fontawesome.com/9c28b8c4ea.js"></script>
+    <link href="../../renderer/css/global.css" rel="stylesheet" media="all" />
+</head>
 
-    <body>
-        <div id="wrap" class="static-ui">
+<body>
+    <div id="wrap" class="static-ui">
 
-            <nav class="header bg-primary">
-                <span class="nav-back">
-                    <button class="btn btn-primary" onclick="app.stepBack()">
-                        <i class="fa fa-angle-left"></i>
-                    </button>
-                </span>
-                <span class="title">Мои сайты</span>
-                <span class="spacer"></span>
-                <div class="toolbar">
-                </div>
-            </nav>
+        <nav class="header bg-primary">
+            <span class="nav-back">
+                <button class="btn btn-primary" onclick="app.stepBack()">
+                    <i class="fa fa-angle-left"></i>
+                </button>
+            </span>
+            <span class="title">Мои сайты</span>
+            <span class="spacer"></span>
+            <div class="toolbar">
+            </div>
+        </nav>
 
-            <div class="workspace">
+        <div class="workspace scrollbar-inner">
+
+            <div class="components">
 
                 <!-- sitelist component -->
 
@@ -42,7 +43,7 @@
                         </li>
                     </ul>
                     <div class="no-sites" data-not="isSites">
-                        <p>Вы не добавили ни одного сайта</p>
+                        <p>Вы еще не добавили ни одного сайта</p>
                         <button class="btn btn-info" onclick="app.addSite()">Добавить сайт</button>
                     </div>
                 </div>
@@ -389,17 +390,20 @@
 
         </div>
 
-        </div>
+    </div>
 
-        <script>
-            if (typeof module === 'object') {
-                window.module = module;
-                module = undefined;
-            }
-        </script>
-        <script src="../../renderer/libs/jquery.js"></script>
-        <script src="../../renderer/libs/bootoast.js"></script>
-        <script src="../../renderer/app.js"></script>
-    </body>
+    </div>
+
+    <script>
+        if (typeof module === 'object') {
+            window.module = module;
+            module = undefined;
+        }
+    </script>
+    <script src="../../renderer/libs/jquery.js"></script>
+    <script src="../../renderer/libs/bootoast.js"></script>
+    <script src="../../renderer/libs/scrollbar.js"></script>
+    <script src="../../renderer/app.js"></script>
+</body>
 
 </html>
