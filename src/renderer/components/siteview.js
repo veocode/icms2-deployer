@@ -16,8 +16,8 @@ class SiteView extends Component {
             hint: 'Редактировать',
             icon: 'pencil',
             class: 'secondary',
-            click: () => { 
-                this.app.editSite(this.site); 
+            click: () => {
+                this.app.editSite(this.site);
             }
         };
 
@@ -25,8 +25,8 @@ class SiteView extends Component {
             hint: 'Удалить',
             icon: 'trash',
             class: 'danger',
-            click: () => { 
-                this.app.confirm('Вы хотите удалить сайт?\nЭто действие нельзя будет отменить', () => {                
+            click: () => {
+                this.app.confirm('Вы хотите удалить сайт?\nЭто действие нельзя будет отменить', () => {
                     this.app.deleteSite(this.site);
                     this.app.stepBack();
                 });
@@ -36,7 +36,7 @@ class SiteView extends Component {
         const deployBtn = {
             title: 'Публиковать',
             class: 'info',
-            click: () => { 
+            click: () => {
                 this.app.deploySite(this.site);
             }
         };
@@ -44,7 +44,7 @@ class SiteView extends Component {
         const updateBtn = {
             title: 'Обновить',
             class: 'success',
-            click: () => { 
+            click: () => {
                 this.app.updateSite(this.site);
             }
         };
@@ -55,7 +55,7 @@ class SiteView extends Component {
         ];
 
         this.app.setToolbar(toolbar);
-        
+
     }
 
     onDeactivation() {

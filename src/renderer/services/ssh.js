@@ -4,7 +4,7 @@ const exec = require('ssh2-exec');
 class SSHService {
 
     ssh;
-    
+
     execCallback;
     stdoutCallback;
     stderrCallback;
@@ -19,7 +19,7 @@ class SSHService {
         };
 
         try {
-            if (this.execCallback){
+            if (this.execCallback) {
                 this.execCallback(`ssh ${opts.username}@${opts.host}`);
             }
             if (this.stdoutCallback) {
@@ -43,21 +43,21 @@ class SSHService {
     }
 
     exec(command, cwd, callback) {
-        if (this.execCallback){
+        if (this.execCallback) {
             this.execCallback(command);
         }
 
         let options = {
-            cmd: command, 
+            cmd: command,
             ssh: this.ssh
         };
-        
-        if (cwd){
+
+        if (cwd) {
             options.cwd = cwd;
         }
 
-        let process = exec(options, function(err, stdout, stderr){
-            if (err){
+        let process = exec(options, function (err, stdout, stderr) {
+            if (err) {
                 callback(false);
                 return;
             }

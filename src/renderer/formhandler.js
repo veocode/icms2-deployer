@@ -61,26 +61,26 @@ class FormHandler {
 
     validate() {
         let isValid = true;
-        
+
         this.$form.find('input[data-val-required]').each((i, input) => {
-            if (!isValid){ return; }
+            if (!isValid) { return; }
             const $input = $(input);
             const message = $input.attr('data-val-required');
             const value = $input.val();
-            if (!value){
+            if (!value) {
                 window.app.alert(message, 'warning');
                 isValid = false;
             }
         });
 
-        if (isValid){
+        if (isValid) {
             this.$form.find('input[data-val-regexp]').each((i, input) => {
-                if (!isValid){ return; }
+                if (!isValid) { return; }
                 const $input = $(input);
                 const regexp = $input.attr('data-val-regexp');
                 const value = $input.val();
                 isValid = new RegExp(regexp).test(value);
-                if (!isValid){
+                if (!isValid) {
                     const message = $input.attr('data-val-message');
                     window.app.alert(message, 'warning');
                 }

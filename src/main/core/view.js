@@ -1,7 +1,7 @@
 const path = require('path');
 
-module.exports = { 
+module.exports = {
     view: function (name) {
-        return path.resolve(__dirname, '..' , 'views' , `${name}.html`);
+        return path.resolve(__dirname, '..', 'views', `${name}.html`);
     }
 }

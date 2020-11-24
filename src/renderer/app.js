@@ -47,7 +47,7 @@ class App {
         $('title').text(this.title);
         this.initComponents();
         this.initControls();
-        this.view(this.defaultComponent);        
+        this.view(this.defaultComponent);
     }
 
     stepBack() {
@@ -100,22 +100,22 @@ class App {
             }
 
             let $button = $('<button class="btn"></button>').appendTo(this.dom.$toolbar);
-            $button.addClass(`btn-${button.class}`);                                    
-            if (button.hint){
+            $button.addClass(`btn-${button.class}`);
+            if (button.hint) {
                 $button.attr('title', button.hint);
             }
-            if (button.icon){
+            if (button.icon) {
                 let $icon = $('<i class="fa"></i>').appendTo($button);
                 $icon.addClass(`fa-${button.icon}`);
             }
-            if (button.title){
+            if (button.title) {
                 let $title = $('<span></span>').appendTo($button);
-                $title.text(button.title);        
+                $title.text(button.title);
             }
             $button.click((e) => {
                 e.preventDefault();
                 button.click();
-            });  
+            });
         });
     }
 
@@ -166,7 +166,7 @@ class App {
             buttons: ["Да", "Нет"],
             defaultId: 1,
         }).then((result) => {
-            if (result.response === 0){
+            if (result.response === 0) {
                 callback();
             }
         });
@@ -232,7 +232,7 @@ class App {
 
 var app = new App();
 
-function app(){
+function app() {
     return app;
 }
 

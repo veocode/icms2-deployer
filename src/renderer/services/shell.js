@@ -5,7 +5,7 @@ class ShellService {
     stderrCallback;
 
     exec(command, cwd, callback) {
-        if (this.execCallback){
+        if (this.execCallback) {
             this.execCallback(command);
         }
         var child_process = require('child_process');

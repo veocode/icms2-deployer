@@ -171,7 +171,7 @@ form .card {
     border: solid 2px #a4b0be;
     border-radius: 5px;
     border-bottom-width: 5px;
-    cursor: pointer;    
+    cursor: pointer;
     transition: all 0.2s;
 }
 
@@ -184,7 +184,7 @@ form .card {
     font-size: 24px;
     font-weight: bold;
     line-height: 24px;
-    margin-bottom: 5px;    
+    margin-bottom: 5px;
 }
 
 #sitelist .list li .url {
@@ -226,7 +226,7 @@ form .card {
 
 #deployer .log-panel {
     display: flex;
-    flex-direction: row;    
+    flex-direction: row;
 }
 
 #deployer .log-view {
