@@ -6,11 +6,10 @@ const shell = require('electron').shell;
 const clipboard = require('electron').clipboard;
 
 const Config = require('./../../renderer/config');
+const encryptService = require('./../../renderer/services/encrypt');
 
 
 class App {
-
-    config = new Config();
 
     //
     // Application Properties
@@ -37,6 +36,9 @@ class App {
         $workspace: $('.workspace')
     }
 
+    config;
+    fingerPrint;
+
     componentInstances = {};
     currentComponent = this.defaultComponent;
     previousComponent = null;
@@ -46,8 +48,9 @@ class App {
     // Framework Logic
     //
 
-    start() {
-        $('title').text(this.title);
+    start(fingerPrint) {
+        this.fingerPrint = fingerPrint;
+        this.config = new Config(fingerPrint);
         this.initComponents();
         this.initControls();
         this.view(this.defaultComponent);
@@ -64,14 +67,16 @@ class App {
     }
 
     initControls() {
+        $('title').text(this.title);
+
         this.dom.$workspace.scrollbar();
 
-        $('a.shell-link').on('click', (e) => {
+        this.dom.$workspace.on('click', 'a.shell-link', (e) => {
             e.preventDefault();
             const $link = $(e.target);
             shell.openExternal($link.attr('href'));
         });
-        $('a.shell-path').on('click', (e) => {
+        this.dom.$workspace.on('click', 'a.shell-path', (e) => {
             e.preventDefault();
             const $link = $(e.target);
             shell.openPath($link.attr('href'));
@@ -174,7 +179,7 @@ class App {
     alert(message, type, title) {
         type = type || "info";
         title = title || this.title;
-        remote.dialog.showMessageBox(null, {
+        remote.dialog.showMessageBox(remote.getCurrentWindow(), {
             type: type,
             title: title,
             message: message,
@@ -183,7 +188,7 @@ class App {
     }
 
     confirm(message, callback) {
-        remote.dialog.showMessageBox(null, {
+        remote.dialog.showMessageBox(remote.getCurrentWindow(), {
             type: 'question',
             title: 'Требуется подтверждение',
             message: message,
@@ -262,14 +267,30 @@ class App {
         this.config.set('sites', updatedSites);
     }
 
+    getSiteByField(fieldName, value) {
+        console.log('getSiteByField', fieldName, value);
+        let sites = this.config.get('sites', []);
+        let foundSite = null;
+        sites.forEach((storedSite, i) => {
+            if (foundSite) { return; }
+            if (storedSite[fieldName] == value) {
+                console.log('found site', foundSite);
+                foundSite = storedSite;
+            }
+        });
+        return foundSite;
+    }
+
+    isSiteExists(fieldName, value) {
+        return this.getSiteByField(fieldName, value) !== null;
+    }
+
 }
 
-var app = new App();
-
-function app() {
-    return app;
-}
+window.app = new App();
 
 $(() => {
-    app.start();
+    encryptService.init(() => {
+        window.app.start();
+    })
 });

@@ -1,9 +1,12 @@
-var fs = require('fs');
+const fs = require('fs');
+const encryptService = require('./services/encrypt');
 
 class Config {
 
     dir = '.icms2deployer';
     file = 'config.json';
+
+    isEncrypted = false;
 
     values = {
         'sites': [],
@@ -66,11 +69,13 @@ class Config {
             try { fs.mkdirSync(this.getDirPath()); } catch { }
         }
         const json = JSON.stringify(this.values, null, 4);
-        fs.writeFileSync(this.getFilePath(), json);
+        const encryptedJSON = this.isEncrypted ? encryptService.encrypt(json) : json;
+        fs.writeFileSync(this.getFilePath(), encryptedJSON);
     }
 
     load() {
-        const json = fs.readFileSync(this.getFilePath()).toString('utf8');
+        const encryptedJSON = fs.readFileSync(this.getFilePath()).toString('utf8');
+        const json = this.isEncrypted ? encryptService.decrypt(encryptedJSON) : encryptedJSON;
         this.values = JSON.parse(json);
     }
 

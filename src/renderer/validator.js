@@ -10,18 +10,16 @@ class Validator {
             return;
         }
 
+        if (window.app.isSiteExists('localDir', values.localDir)) {
+            callback(false, `Сайт из этой папки уже был добавлен:\n${values.localDir}`);
+            return;
+        }
+
         callback(true);
 
     }
 
-    validateCredentials(site, credentials, callback) {
-
-        const sshCredentials = {
-            host: site.serverHost,
-            port: site.serverPort,
-            user: site.serverUser,
-            password: credentials.serverPassword
-        };
+    validateDeployment(site, config, callback) {
 
         this.testGitInstalled((isInstalled) => {
 

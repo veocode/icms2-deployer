@@ -16,16 +16,16 @@ class Deployer extends Component {
 
     deployService = require('../services/deploy');
 
-    credentialsForm = new FormHandler('#deployer form', (credentials, form) => {
+    credentialsForm = new FormHandler('#deployer form', (deployConfig, form) => {
         form.startLoading();
         const validator = new Validator();
-        validator.validateCredentials(this.site, credentials, (isValid, error) => {
+        validator.validateDeployment(this.site, deployConfig, (isValid, error) => {
             form.endLoading();
             if (!isValid) {
                 this.app.alert(error, 'warning');
                 return;
             }
-            this.deploy(credentials);
+            this.deploy(deployConfig);
         });
     });
 
@@ -52,20 +52,14 @@ class Deployer extends Component {
         this.credentialsForm.resetValues();
     }
 
-    deploy(credentials) {
+    deploy(config) {
         this.$formPanel.hide();
         this.$logPanel.show();
 
-        this.site.gitPassword = credentials.gitPassword;
-        this.site.serverPassword = credentials.serverPassword;
-
-        delete credentials.gitPassword;
-        delete credentials.serverPassword;
-
-        this.site.config = credentials;
+        this.site.config = config;
         this.site.config.PHPMYADMIN_INSTALL = 'y';
 
-        if (!credentials.PHPMYADMIN_PORT) {
+        if (!config.PHPMYADMIN_PORT) {
             this.site.config.PHPMYADMIN_INSTALL = 'n';
             this.site.config.PHPMYADMIN_PORT = 8080;
         }
@@ -84,19 +78,19 @@ class Deployer extends Component {
     done(isSuccess) {
         this.$btnDone.show();
 
-        if (isSuccess) {
-            this.site.isDeployed = true;
-            this.site.deployedAt = Date.now();
+        // if (isSuccess) {
+        this.site.isDeployed = true;
+        this.site.deployedAt = Date.now();
 
-            let url = `http://${this.site.serverHost}`;
-            if (this.site.config.HTTP_PORT != 80) {
-                url += `:${this.site.config.HTTP_PORT}`;
-            }
-            url += '/';
-            this.log({ text: `Готово! Ваш сайт: <a class="shell-link" href="${url}">${url}</a>`, type: 'done' });
+        let url = `http://${this.site.serverHost}`;
+        if (this.site.config.HTTP_PORT != 80) {
+            url += `:${this.site.config.HTTP_PORT}`;
         }
+        url += '/';
 
-        delete this.site.gitRepoFull;
+        this.log({ text: `Готово! Ваш сайт: <a class="shell-link" href="${url}">${url}</a>`, type: 'done' });
+        // }
+
         this.app.saveUpdatedSite(this.site);
     }
 
