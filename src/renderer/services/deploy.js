@@ -1,6 +1,5 @@
-const settings = require("../settings");
-
 const TaskRunner = load.class('taskrunner');
+
 
 class DeployService extends TaskRunner {
 
