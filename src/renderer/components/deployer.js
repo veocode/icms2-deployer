@@ -42,7 +42,7 @@ class Deployer extends Component {
         this.$logPanel.hide();
         this.$log.empty();
         this.$terminal.empty().html('');
-        this.credentialsForm.setValues(app.config.get('defaultSite').config);
+        this.credentialsForm.setValues(settings.defaultSite.config);
         app.setTitle('Публикация сайта', 'siteview', this.site);
     }
 

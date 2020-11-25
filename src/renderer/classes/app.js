@@ -199,8 +199,7 @@ class App {
     //
 
     addSite() {
-        const defaultSite = this.config.get('defaultSite', {});
-        this.view('siteform', defaultSite, (site) => {
+        this.view('siteform', settings.defaultSite, (site) => {
             this.saveAddedSite(site);
             this.toast({
                 type: 'success',

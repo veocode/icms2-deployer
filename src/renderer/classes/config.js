@@ -5,33 +5,8 @@ const encryptService = load.service('encrypt');
 
 class Config {
 
-    dir = '.icms2deployer';
-    file = 'config.json';
-
-    isEncrypted = false;
-
     values = {
         'sites': [],
-        'defaultSite': {
-            name: '',
-            url: '',
-            localDir: '',
-            version: '1.0.0',
-            gitRepo: 'https://github.com/veocode/testrepo.git',
-            gitUser: 'veocode',
-            serverHost: '134.209.26.140',
-            serverPort: '22',
-            serverUser: 'root',
-            config: {
-                HTTP_PORT: 80,
-                PHPMYADMIN_PORT: 8080,
-                MYSQL_DATABASE: 'icmsdb',
-                MYSQL_USER: 'icmsdb',
-                MYSQL_PASSWORD: 'secret',
-                MYSQL_ROOT_PASSWORD: 'rootsecret',
-                PHPMYADMIN_INSTALL: 'y'
-            }
-        },
     };
 
     constructor() {
@@ -55,11 +30,11 @@ class Config {
     }
 
     getDirPath() {
-        return path.join(os.homedir(), this.dir);
+        return path.join(os.homedir(), settings.config.dir);
     }
 
     getFilePath() {
-        return path.join(this.getDirPath(), this.file);
+        return path.join(this.getDirPath(), settings.config.file);
     }
 
     isExists() {
@@ -71,13 +46,13 @@ class Config {
             try { fs.mkdirSync(this.getDirPath()); } catch { }
         }
         const json = JSON.stringify(this.values, null, 4);
-        const encryptedJSON = this.isEncrypted ? encryptService.encrypt(json) : json;
+        const encryptedJSON = settings.config.isEncrypt ? encryptService.encrypt(json) : json;
         fs.writeFileSync(this.getFilePath(), encryptedJSON);
     }
 
     load() {
         const encryptedJSON = fs.readFileSync(this.getFilePath()).toString('utf8');
-        const json = this.isEncrypted ? encryptService.decrypt(encryptedJSON) : encryptedJSON;
+        const json = settings.config.isEncrypt ? encryptService.decrypt(encryptedJSON) : encryptedJSON;
         this.values = JSON.parse(json);
     }
 
