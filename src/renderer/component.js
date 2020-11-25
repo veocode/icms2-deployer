@@ -1,13 +1,13 @@
 class Component {
 
+    id;
     $container;
     $templates;
-    app;
     callback;
 
-    constructor(containerId, app) {
-        this.$container = $(`#${containerId}`);
-        this.app = app;
+    constructor() {
+        this.id = this.constructor.name.toLowerCase();
+        this.$container = $(`#${this.id}`);
         this.onInit();
         this.initTemplates();
     }

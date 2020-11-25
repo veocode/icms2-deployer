@@ -7,7 +7,7 @@ class SiteView extends Component {
 
     onActivation(site) {
         this.site = site;
-        this.app.setTitle(site.name, 'sitelist');
+        app.setTitle(site.name, 'sitelist');
         this.setToolbar();
     }
 
@@ -18,7 +18,7 @@ class SiteView extends Component {
             icon: 'pencil',
             class: 'secondary',
             click: () => {
-                this.app.editSite(this.site);
+                app.editSite(this.site);
             }
         };
 
@@ -27,10 +27,10 @@ class SiteView extends Component {
             icon: 'trash',
             class: 'danger',
             click: () => {
-                this.app.confirm('Вы хотите удалить сайт?\nЭто действие нельзя будет отменить', () => {
-                    this.app.deleteSite(this.site);
-                    this.app.stepBack();
-                    this.app.toast({
+                app.confirm('Вы хотите удалить сайт?\nЭто действие нельзя будет отменить', () => {
+                    app.deleteSite(this.site);
+                    app.stepBack();
+                    app.toast({
                         type: 'success',
                         message: `Сайт удалён`,
                         timeout: 1.5,
@@ -43,7 +43,7 @@ class SiteView extends Component {
             title: 'Публиковать',
             class: 'info',
             click: () => {
-                this.app.deploySite(this.site);
+                app.deploySite(this.site);
             }
         };
 
@@ -51,7 +51,7 @@ class SiteView extends Component {
             title: 'Обновить',
             class: 'success',
             click: () => {
-                this.app.updateSite(this.site);
+                app.updateSite(this.site);
             }
         };
 
@@ -60,7 +60,7 @@ class SiteView extends Component {
             this.site.isDeployed ? updateBtn : deployBtn
         ];
 
-        this.app.setToolbar(toolbar);
+        app.setToolbar(toolbar);
 
     }
 
@@ -90,4 +90,4 @@ class SiteView extends Component {
 
 }
 
-module.exports = SiteView;
+module.exports = new SiteView();

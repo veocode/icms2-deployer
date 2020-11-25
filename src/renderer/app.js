@@ -60,7 +60,7 @@ class App {
 
     initComponents() {
         this.components.forEach((componentName) => {
-            this.componentInstances[componentName] = this.makeComponent(componentName);
+            this.componentInstances[componentName] = load.component(componentName);
         });
     }
 
@@ -97,11 +97,6 @@ class App {
 
     initDynamicControls() {
         $('.click-to-copy').attr('title', 'Нажмите, чтобы скопировать');
-    }
-
-    makeComponent(componentName) {
-        const componentClass = load.component(componentName);
-        return new (componentClass)(componentName, this);
     }
 
     setTitle(title, previousComponent, previousComponentParams) {

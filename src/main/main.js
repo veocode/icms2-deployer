@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, session, BrowserWindow } = require('electron');
 const { view } = require('./core/view');
 
 class MainProcessWorker {

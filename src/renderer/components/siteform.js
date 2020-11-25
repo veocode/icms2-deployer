@@ -1,18 +1,17 @@
 const path = load.node('path');
 const Component = load.class('component');
 const FormHandler = load.class('formhandler');
-const Validator = load.class('validator');
+const validatorService = load.service('validator');
 
 
 class SiteForm extends Component {
 
     form = new FormHandler('#siteform form', (values, form) => {
         form.startLoading();
-        const validator = new Validator();
-        validator.validateSite(values, (isValid, error) => {
+        validatorService.validateSite(values, (isValid, error) => {
             form.endLoading();
             if (!isValid) {
-                this.app.alert(error, 'warning');
+                app.alert(error, 'warning');
                 return;
             }
             this.result(values);
@@ -30,7 +29,7 @@ class SiteForm extends Component {
         const $inputDir = this.$dom('#input-dir');
         const $inputName = this.$dom('#input-name');
         const $inputURL = this.$dom('#input-url');
-        this.app.openDirectorySelectDialog((dirName) => {
+        app.openDirectorySelectDialog((dirName) => {
             $inputDir.val(dirName);
             const baseName = path.basename(dirName);
             if (!$inputName.val()) {
@@ -44,9 +43,9 @@ class SiteForm extends Component {
 
     onActivation(site) {
         const title = site.id ? 'Редактировать сайт' : 'Добавить сайт';
-        this.app.setTitle(title, 'sitelist');
+        app.setTitle(title, 'sitelist');
         this.form.setValues(site);
-        this.app.setToolbar([{
+        app.setToolbar([{
             hint: 'Сохранить',
             icon: 'check',
             class: 'success',
@@ -58,7 +57,7 @@ class SiteForm extends Component {
             icon: 'times',
             class: 'danger',
             click: () => {
-                this.app.stepBack();
+                app.stepBack();
             }
         }]);
     }
@@ -69,4 +68,4 @@ class SiteForm extends Component {
 
 }
 
-module.exports = SiteForm;
+module.exports = new SiteForm();

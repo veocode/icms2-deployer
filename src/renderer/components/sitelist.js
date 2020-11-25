@@ -7,18 +7,18 @@ class SiteList extends Component {
     sites = [];
 
     onActivation() {
-        this.app.setTitle('Мои сайты');
+        app.setTitle('Мои сайты');
         this.buildSiteList();
         this.bind({
             'isSites': this.sites.length > 0
         });
         if (this.sites.length > 0) {
-            this.app.setToolbar([{
+            app.setToolbar([{
                 hint: 'Добавить сайт',
                 icon: 'plus',
                 class: 'info',
                 click: () => {
-                    this.app.addSite();
+                    app.addSite();
                 }
             }]);
         }
@@ -29,12 +29,12 @@ class SiteList extends Component {
     }
 
     buildSiteList() {
-        this.sites = this.app.config.get('sites', [], true);
+        this.sites = app.config.get('sites', [], true);
         this.sites.forEach((site) => {
             const $item = this.render('list-item', site);
             $item.click((e) => {
                 e.preventDefault();
-                this.app.openSite(site);
+                app.openSite(site);
             });
             this.$siteList.append($item);
         });
@@ -42,4 +42,4 @@ class SiteList extends Component {
 
 }
 
-module.exports = SiteList;
+module.exports = new SiteList();

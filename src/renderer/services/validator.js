@@ -2,7 +2,7 @@ var fs = load.node('fs');
 var path = load.node('path');
 
 
-class Validator {
+class ValidatorService {
 
     validateSite(values, callback) {
 
@@ -80,4 +80,4 @@ class Validator {
 
 }
 
-module.exports = Validator;
+module.exports = new ValidatorService();

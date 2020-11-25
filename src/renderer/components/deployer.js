@@ -1,6 +1,6 @@
 const Component = load.class('component');
 const FormHandler = load.class('formhandler');
-const Validator = load.class('validator');
+const validatorService = load.service('validator');
 
 
 class Deployer extends Component {
@@ -18,11 +18,10 @@ class Deployer extends Component {
 
     credentialsForm = new FormHandler('#deployer form', (deployConfig, form) => {
         form.startLoading();
-        const validator = new Validator();
-        validator.validateDeployment(this.site, deployConfig, (isValid, error) => {
+        validatorService.validateDeployment(this.site, deployConfig, (isValid, error) => {
             form.endLoading();
             if (!isValid) {
-                this.app.alert(error, 'warning');
+                app.alert(error, 'warning');
                 return;
             }
             this.deploy(deployConfig);
@@ -32,7 +31,7 @@ class Deployer extends Component {
     onInit() {
         this.$dom('.btn-done').click((e) => {
             e.preventDefault();
-            this.app.openSite(this.site);
+            app.openSite(this.site);
         })
     }
 
@@ -43,8 +42,8 @@ class Deployer extends Component {
         this.$logPanel.hide();
         this.$log.empty();
         this.$terminal.empty().html('');
-        this.credentialsForm.setValues(this.app.config.get('defaultSite').config);
-        this.app.setTitle('Публикация сайта', 'siteview', this.site);
+        this.credentialsForm.setValues(app.config.get('defaultSite').config);
+        app.setTitle('Публикация сайта', 'siteview', this.site);
     }
 
     onDeactivation() {
@@ -91,7 +90,7 @@ class Deployer extends Component {
         this.log({ text: `Готово! Ваш сайт: <a class="shell-link" href="${url}">${url}</a>`, type: 'done' });
         // }
 
-        this.app.saveUpdatedSite(this.site);
+        app.saveUpdatedSite(this.site);
     }
 
     log(message) {
@@ -107,4 +106,4 @@ class Deployer extends Component {
 
 }
 
-module.exports = Deployer;
+module.exports = new Deployer();
