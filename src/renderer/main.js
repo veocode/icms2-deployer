@@ -1,3 +1,6 @@
+//
+// Define Import Helpers
+//
 global.load = {
     node: function (module) {
         if (arguments.length == 1) {
@@ -14,16 +17,27 @@ global.load = {
         }
         return result;
     },
-    class: (module) => {
-        return require(`./../../renderer/${module}`);
+    module: (name) => {
+        return require(`./../../renderer/${name}`);
     },
-    service: (service) => {
-        return global.load.class(`services/${service}`);
+    class: (name) => {
+        return load.module(`classes/${name}`);
     },
-    component: (component) => {
-        return global.load.class(`components/${component}`);
+    service: (name) => {
+        return load.module(`services/${name}`);
+    },
+    component: (name) => {
+        return load.module(`components/${name}`);
+    },
+    instance: (name) => {
+        return new (load.class(name))();
     }
 }
 
-global.app = new (global.load.class('app'))();
-global.app.start();
+//
+// Load and Start App when browser is ready
+//
+$(() => {
+    global.app = load.instance('app');
+    global.app.start();
+});

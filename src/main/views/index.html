@@ -4,7 +4,13 @@
         <meta charset="UTF-8">
         <title></title>
         <script src="https://use.fontawesome.com/9c28b8c4ea.js"></script>
-        <link href="../../renderer/css/global.css" rel="stylesheet" media="all" />
+        <link href="../../assets/css/global.css" rel="stylesheet" media="all" />
+        <script>
+            if (typeof module === 'object') {
+                window.module = module;
+                module = undefined;
+            }
+        </script>
     </head>
 
     <body>
@@ -405,15 +411,9 @@
 
         </div>
 
-        <script>
-            if (typeof module === 'object') {
-                window.module = module;
-                module = undefined;
-            }
-        </script>
-        <script src="../../renderer/libs/jquery.js"></script>
-        <script src="../../renderer/libs/bootoast.js"></script>
-        <script src="../../renderer/libs/scrollbar.js"></script>
+        <script src="../../assets/libs/jquery.js"></script>
+        <script src="../../assets/libs/bootoast.js"></script>
+        <script src="../../assets/libs/scrollbar.js"></script>
         <script src="../../renderer/main.js"></script>
     </body>
 
