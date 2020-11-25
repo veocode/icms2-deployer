@@ -261,13 +261,11 @@ class App {
     }
 
     getSiteByField(fieldName, value) {
-        console.log('getSiteByField', fieldName, value);
         let sites = this.config.get('sites', []);
         let foundSite = null;
         sites.forEach((storedSite, i) => {
             if (foundSite) { return; }
             if (storedSite[fieldName] == value) {
-                console.log('found site', foundSite);
                 foundSite = storedSite;
             }
         });

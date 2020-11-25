@@ -75,22 +75,21 @@ class Deployer extends Component {
     }
 
     done(isSuccess) {
-        this.$btnDone.show();
+        if (isSuccess) {
+            this.site.isDeployed = true;
+            this.site.deployedAt = Date.now();
 
-        // if (isSuccess) {
-        this.site.isDeployed = true;
-        this.site.deployedAt = Date.now();
+            let url = this.site.url;
+            if (this.site.config.HTTP_PORT != 80) {
+                url += `:${this.site.config.HTTP_PORT}`;
+            }
+            url += '/';
 
-        let url = `http://${this.site.serverHost}`;
-        if (this.site.config.HTTP_PORT != 80) {
-            url += `:${this.site.config.HTTP_PORT}`;
+            this.log({ text: `Готово! Ваш сайт: <a class="shell-link" href="${url}">${url}</a>`, type: 'done' });
         }
-        url += '/';
-
-        this.log({ text: `Готово! Ваш сайт: <a class="shell-link" href="${url}">${url}</a>`, type: 'done' });
-        // }
 
         app.saveUpdatedSite(this.site);
+        this.$btnDone.show();
     }
 
     log(message) {
