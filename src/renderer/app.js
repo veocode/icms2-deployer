@@ -1,5 +1,5 @@
 const { remote, shell, clipboard } = load.node('electron');
-const Config = load.module('config');
+const Config = load.class('config');
 const encryptService = load.service('encrypt');
 
 
@@ -285,4 +285,4 @@ class App {
 
 }
 
-module.exports = new App();
+module.exports = App;

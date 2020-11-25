@@ -14,16 +14,16 @@ global.load = {
         }
         return result;
     },
-    module: (module) => {
+    class: (module) => {
         return require(`./../../renderer/${module}`);
     },
     service: (service) => {
-        return global.load.module(`services/${service}`);
+        return global.load.class(`services/${service}`);
     },
     component: (component) => {
-        return global.load.module(`components/${component}`);
+        return global.load.class(`components/${component}`);
     }
 }
 
-global.app = global.load.module('app');
+global.app = new (global.load.class('app'))();
 global.app.start();

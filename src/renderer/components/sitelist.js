@@ -1,4 +1,4 @@
-const Component = load.module('component');
+const Component = load.class('component');
 
 
 class SiteList extends Component {
