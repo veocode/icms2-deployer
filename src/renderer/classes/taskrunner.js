@@ -1,29 +1,25 @@
-class TaskRunnerService {
+class TaskRunner {
 
     site;
     onLog;
     onDone;
 
-    shellService = require('../services/shell');
-    gitService = require('../services/git');
-    sshService = require('../services/ssh');
+    shellService = load.service('shell');
+    sshService = load.service('ssh');
+    gitService = load.service('git');
 
     tasks = [];
 
-    getTasks() {
-        return [];
-    }
+    getTasks() { return []; }
 
-    onStart() {
-
-    }
+    onStart() { }
 
     start(options) {
         this.site = options.site;
         this.onLog = options.onLog;
         this.onDone = options.onDone;
         this.tasks = this.getTasks();
-        this.onStart(options);
+        this.onStart();
         this.initServices();
         this.runNextTask();
     }
@@ -50,9 +46,6 @@ class TaskRunnerService {
     }
 
     stripPasswords(text) {
-        // if (this.site.gitPassword) {
-        //     text = text.replace(this.site.gitPassword, '***');
-        // }
         return text;
     }
 
@@ -91,4 +84,4 @@ class TaskRunnerService {
 
 }
 
-module.exports = TaskRunnerService;
+module.exports = TaskRunner;

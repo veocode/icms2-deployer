@@ -1,9 +1,8 @@
-const TaskRunnerService = load.service('taskrunner');
+const settings = require("../settings");
 
-class DeployService extends TaskRunnerService {
+const TaskRunner = load.class('taskrunner');
 
-    icms2dockerRepoUrl = 'https://github.com/veocode/icms2-docker.git';
-    serverSiteRoot = '/opt';
+class DeployService extends TaskRunner {
 
     getTasks() {
         return [
@@ -18,9 +17,9 @@ class DeployService extends TaskRunnerService {
         ];
     }
 
-    onStart(options) {
+    onStart() {
         this.site.gitRepoFull = this.gitService.getRepoUrlWithCredentials(this.site.gitRepo, this.site.gitUser, this.site.gitPassword);
-        this.site.serverDir = this.serverSiteRoot + '/' + this.site.name;
+        this.site.serverDir = settings.serverSiteRoot + '/' + this.site.name;
     }
 
     //
@@ -75,7 +74,7 @@ class DeployService extends TaskRunnerService {
 
     serverAptUpdate() {
         this.log('Обновляем источники APT...');
-        this.sshService.exec('apt update -y', this.serverSiteRoot, (isSuccess) => {
+        this.sshService.exec('apt update -y', settings.serverSiteRoot, (isSuccess) => {
             if (!isSuccess) {
                 this.halt('Не удалось обновить источники APT');
                 return;
@@ -86,7 +85,7 @@ class DeployService extends TaskRunnerService {
 
     serverGitInstall() {
         this.log('Устанавливаем Git...');
-        this.sshService.exec('apt install git -y', this.serverSiteRoot, (isSuccess) => {
+        this.sshService.exec('apt install git -y', settings.serverSiteRoot, (isSuccess) => {
             if (!isSuccess) {
                 this.halt('Не удалось установить Git на сервере');
                 return;
@@ -97,7 +96,7 @@ class DeployService extends TaskRunnerService {
 
     serverDockerInstall() {
         this.log('Устанавливаем Docker...');
-        this.sshService.exec('apt install docker.io docker-compose -y', this.serverSiteRoot, (isSuccess) => {
+        this.sshService.exec('apt install docker.io docker-compose -y', settings.serverSiteRoot, (isSuccess) => {
             if (!isSuccess) {
                 this.halt('Не удалось установить Docker на сервере');
                 return;
@@ -108,7 +107,7 @@ class DeployService extends TaskRunnerService {
 
     serverCheckoutICMSDocker() {
         this.log(`Клонируем icms2-docker в папку сайта...`);
-        this.sshService.exec(`git clone ${this.icms2dockerRepoUrl} ${this.site.serverDir}`, this.serverSiteRoot, (isSuccess) => {
+        this.sshService.exec(`git clone ${settings.icms2dockerRepoUrl} ${this.site.serverDir}`, settings.serverSiteRoot, (isSuccess) => {
             if (!isSuccess) {
                 this.halt('Не удалось клонировать icms2-docker');
                 return;

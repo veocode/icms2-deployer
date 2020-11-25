@@ -1,5 +1,6 @@
-var fs = load.node('fs');
-var path = load.node('path');
+const fs = load.node('fs');
+const path = load.node('path');
+const shellService = load.service('shell');
 
 
 class ValidatorService {
@@ -42,8 +43,6 @@ class ValidatorService {
     }
 
     testGitInstalled(callback) {
-
-        const shellService = require('./services/shell');
 
         shellService.exec('git --version', '', (error) => {
             if (error) {

@@ -34,6 +34,13 @@ global.load = {
     }
 }
 
+
+//
+// Load App Settings
+//
+global.settings = load.module('settings');
+
+
 //
 // Load and Start App when browser is ready
 //
