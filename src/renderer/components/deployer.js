@@ -1,6 +1,6 @@
-const Component = require('../component');
-const FormHandler = require('../formhandler');
-const Validator = require('../validator');
+const Component = load.module('component');
+const FormHandler = load.module('formhandler');
+const Validator = load.module('validator');
 
 
 class Deployer extends Component {

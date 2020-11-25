@@ -1,4 +1,4 @@
-const TaskRunnerService = require('./taskrunner');
+const TaskRunnerService = load.service('taskrunner');
 
 class DeployService extends TaskRunnerService {
 

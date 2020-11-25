@@ -1,12 +1,6 @@
-const os = require('os');
-const path = require('path');
-const fs = require('fs');
-const remote = require('electron').remote;
-const shell = require('electron').shell;
-const clipboard = require('electron').clipboard;
-
-const Config = require('./../../renderer/config');
-const encryptService = require('./../../renderer/services/encrypt');
+const { remote, shell, clipboard } = load.node('electron');
+const Config = load.module('config');
+const encryptService = load.service('encrypt');
 
 
 class App {
@@ -37,7 +31,6 @@ class App {
     }
 
     config;
-    fingerPrint;
 
     componentInstances = {};
     currentComponent = this.defaultComponent;
@@ -48,9 +41,14 @@ class App {
     // Framework Logic
     //
 
-    start(fingerPrint) {
-        this.fingerPrint = fingerPrint;
-        this.config = new Config(fingerPrint);
+    init() {
+        encryptService.init(() => {
+            this.start();
+        })
+    }
+
+    start() {
+        this.config = new Config();
         this.initComponents();
         this.initControls();
         this.view(this.defaultComponent);
@@ -102,7 +100,7 @@ class App {
     }
 
     makeComponent(componentName) {
-        const componentClass = require(`./../../renderer/components/${componentName}`);
+        const componentClass = load.component(componentName);
         return new (componentClass)(componentName, this);
     }
 
@@ -287,10 +285,4 @@ class App {
 
 }
 
-window.app = new App();
-
-$(() => {
-    encryptService.init(() => {
-        window.app.start();
-    })
-});
+module.exports = new App();

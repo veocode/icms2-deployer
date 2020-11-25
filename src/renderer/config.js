@@ -1,5 +1,7 @@
-const fs = require('fs');
-const encryptService = require('./services/encrypt');
+const os = load.node('os');
+const path = load.node('path');
+const fs = load.node('fs');
+const encryptService = load.service('encrypt');
 
 class Config {
 

@@ -1,5 +1,5 @@
-const { TouchBarScrubber } = require('electron');
-const Component = require('../component');
+const Component = load.module('component');
+
 
 class SiteList extends Component {
 

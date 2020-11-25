@@ -1,5 +1,5 @@
-const crypto = require('crypto');
-const getFingerprint = require('hw-fingerprint').getFingerprint;
+const crypto = load.node('crypto');
+const getFingerprint = load.node('hw-fingerprint', 'getFingerprint');
 
 class EncryptService {
 

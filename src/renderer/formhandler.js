@@ -1,5 +1,3 @@
-const { app } = require("electron");
-
 class FormHandler {
 
     $form;
@@ -68,7 +66,7 @@ class FormHandler {
             const message = $input.attr('data-val-required');
             const value = $input.val();
             if (!value) {
-                window.app.alert(message, 'warning');
+                app.alert(message, 'warning');
                 isValid = false;
             }
         });
@@ -82,7 +80,7 @@ class FormHandler {
                 isValid = new RegExp(regexp).test(value);
                 if (!isValid) {
                     const message = $input.attr('data-val-message');
-                    window.app.alert(message, 'warning');
+                    app.alert(message, 'warning');
                 }
             });
         }

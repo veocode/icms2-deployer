@@ -1,5 +1,5 @@
-const connect = require('ssh2-connect');
-const exec = require('ssh2-exec');
+const connect = load.node('ssh2-connect');
+const exec = load.node('ssh2-exec');
 
 class SSHService {
 

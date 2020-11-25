@@ -1,5 +1,5 @@
-const Component = require('../component');
-const moment = require('moment');
+const Component = load.module('component');
+const moment = load.node('moment');
 
 class SiteView extends Component {
 

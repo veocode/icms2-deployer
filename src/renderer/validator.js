@@ -1,5 +1,6 @@
-var fs = require('fs');
-var path = require('path');
+var fs = load.node('fs');
+var path = load.node('path');
+
 
 class Validator {
 

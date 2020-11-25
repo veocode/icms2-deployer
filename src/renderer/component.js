@@ -1,5 +1,3 @@
-const { TouchBarScrubber } = require("electron");
-
 class Component {
 
     $container;
