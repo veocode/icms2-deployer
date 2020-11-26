@@ -12,10 +12,10 @@ class SSHService {
     async connect(site, callback) {
 
         const opts = {
-            host: site.serverHost,
-            port: site.serverPort,
-            username: site.serverUser,
-            password: site.serverPassword
+            host: site.server.host,
+            port: site.server.port,
+            username: site.server.user,
+            password: site.server.password
         };
 
         try {

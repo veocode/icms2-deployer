@@ -69,20 +69,20 @@ class SiteView extends Component {
     }
 
     getConnectionCommand() {
-        return `ssh ${this.site.serverUser}@${this.site.serverHost} -p${this.site.serverPort}`;
+        return `ssh ${this.site.server.user}@${this.site.server.host} -p${this.site.server.port}`;
     }
 
     getDeployStatus() {
-        if (this.site.isDeployed) {
-            const date = moment(this.site.deployedAt).locale('ru').calendar();
+        if (this.site.deploy.done) {
+            const date = moment(this.site.deploy.date).locale('ru').calendar();
             return `<span>${date}</span>`;
         }
         return `<span class="text-muted">Сайт не опубликован</span>`;
     }
 
     getUpdateStatus() {
-        if (this.site.updatedAt) {
-            const date = moment(this.site.updatedAt).locale('ru').calendar();
+        if (this.site.update.done) {
+            const date = moment(this.site.update.date).locale('ru').calendar();
             return `<span>${date}</span>`;
         }
         return `<span class="text-muted">Сайт не обновлялся</span>`;

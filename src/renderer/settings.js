@@ -11,11 +11,32 @@ module.exports = {
         url: '',
         localDir: '',
         version: '1.0.0',
-        gitRepo: 'https://github.com/veocode/testrepo.git',
-        gitUser: 'veocode',
-        serverHost: '134.209.26.140',
-        serverPort: '22',
-        serverUser: 'root',
+        git: {
+            repo: 'https://github.com/veocode/testrepo.git',
+            user: 'veocode',
+            password: '',
+            dsn: null
+        },
+        server: {
+            host: '134.209.26.140',
+            port: '22',
+            user: 'root',
+            password: ''
+        },
+        deploy: {
+            done: false,
+            date: null,
+        },
+        update: {
+            done: false,
+            date: null,
+        },
+        cert: {
+            done: false,
+            date: null,
+            email: null,
+            domain: null
+        },
         config: {
             HTTP_PORT: 80,
             PHPMYADMIN_PORT: 8080,

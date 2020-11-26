@@ -84,8 +84,8 @@ class Deployer extends Component {
 
     done(isSuccess) {
         if (isSuccess) {
-            this.site.isDeployed = true;
-            this.site.deployedAt = Date.now();
+            this.site.deploy.done = true;
+            this.site.deploy.date = Date.now();
 
             let url = this.site.url;
             if (this.site.config.HTTP_PORT != 80) {

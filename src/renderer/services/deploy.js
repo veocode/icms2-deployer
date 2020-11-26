@@ -17,7 +17,7 @@ class DeployService extends TaskRunner {
     }
 
     onStart() {
-        this.site.gitRepoFull = this.gitService.getRepoUrlWithCredentials(this.site.gitRepo, this.site.gitUser, this.site.gitPassword);
+        this.site.git.dsn = this.gitService.getRepoDSN(this.site.git);
         this.site.serverDir = settings.serverSiteRoot + '/' + this.site.name;
     }
 
@@ -40,7 +40,7 @@ class DeployService extends TaskRunner {
                     'git init',
                     'git add .',
                     'git commit -am "init"',
-                    `git remote add origin ${this.site.gitRepoFull}`,
+                    `git remote add origin ${this.site.git.dsn}`,
                     `git push -u origin master`,
                     `git tag v${this.site.version}`,
                     `git push origin v${this.site.version}`
@@ -146,7 +146,7 @@ class DeployService extends TaskRunner {
     serverInstallICMS() {
         this.log(`Инициализируем icms2-docker...`);
 
-        let command = `./init.sh deploy ${this.site.gitRepoFull} --skip-wizard`;
+        let command = `./init.sh deploy ${this.site.git.dsn} --skip-wizard`;
 
         if (this.site.config.PHPMYADMIN_PORT) {
             command += ' --with-pma';

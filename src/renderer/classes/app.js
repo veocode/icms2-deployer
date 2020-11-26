@@ -248,7 +248,6 @@ class App {
 
     saveAddedSite(site) {
         let sites = this.config.get('sites', []);
-        site.isDeployed = false;
         site.id = sites.length + 1;
         sites.push(site);
         this.config.set('sites', sites);
