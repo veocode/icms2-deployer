@@ -1,0 +1,108 @@
+<form id="site-form">
+    <input type="hidden" name="id" value="">
+    <input type="hidden" name="isDeployed" value="">
+    <div class="card">
+        <div class="card-header">Параметры сайта</div>
+        <div class="card-body">
+            <div class="flex-row">
+                <div class="title">Локальная папка</div>
+                <div class="value">
+                    <input name="localDir" type="text" readonly id="input-dir" class="form-control"
+                        data-val-required="Укажите локальную папку сайта" value="">
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="title">Название сайта</div>
+                <div class="value">
+                    <input name="name" id="input-name" type="text" class="form-control"
+                        data-val-required="Укажите название сайта" data-val-regexp="^[a-z0-9\-_]+$"
+                        data-val-message="Название сайта может включать только маленькие латинские буквы, цифры, знак дефис и нижнее подчеркивание"
+                        placeholder="my-new-site" value="">
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="title">URL сайта</div>
+                <div class="value">
+                    <input name="url" id="input-url" type="text" class="form-control"
+                        data-val-required="Укажите URL сайта" data-val-regexp="^https?:\/\/([а-яa-z0-9\-_\.\/]+)$"
+                        data-val-message="URL сайта должен начинаться с протокола http:// или https://"
+                        placeholder="http://my-new-site.com" value="">
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="title">Версия сайта</div>
+                <div class="value">
+                    <input name="version" type="text" class="form-control" data-val-required="Укажите версию сайта"
+                        data-val-regexp="[0-9]+\.[0-9]+\.[0-9]"
+                        data-val-message="Версия сайта должна быть в формате MAJOR.MINOR.BUILD. Например: 1.0.0"
+                        placeholder="1.0.0" value="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">Параметры GIT</div>
+        <div class="card-body">
+            <div class="flex-row">
+                <div class="title">URL репозитория</div>
+                <div class="value">
+                    <input name="gitRepo" type="text" class="form-control" data-val-required="Укажите URL репозитория"
+                        data-val-regexp="^https?:\/\/"
+                        data-val-message="URL репозитория должен начинаться с протокола http:// или https://"
+                        placeholder="https://github.com/user/repo.git" value="">
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="title">Пользователь</div>
+                <div class="value">
+                    <input name="gitUser" type="text" class="form-control"
+                        data-val-required="Укажите логин пользователя Git" value="">
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="title">Пароль</div>
+                <div class="value">
+                    <input name="gitPassword" type="password" class="form-control"
+                        data-val-required="Укажите пароль пользователя Git" value="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">Параметры сервера</div>
+        <div class="card-body">
+            <div class="flex-row">
+                <div class="title">Хост</div>
+                <div class="value">
+                    <input name="serverHost" type="text" class="form-control" placeholder="Домен или IP"
+                        data-val-required="Укажите хост сервера" value="">
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="title">Порт SSH</div>
+                <div class="value">
+                    <input name="serverPort" type="number" class="form-control" data-val-required="Укажите порт SSH"
+                        data-val-regexp="^[0-9]+$" data-val-message="Порт SSH должен содержать только цифры" value="">
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="title">Пользователь SSH</div>
+                <div class="value">
+                    <input name="serverUser" type="text" class="form-control"
+                        data-val-required="Укажите имя пользователя SSH" value="">
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="title">Пароль SSH</div>
+                <div class="value">
+                    <input name="serverPassword" type="password" class="form-control"
+                        data-val-required="Укажите пароль пользователя SSH" value="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn btn-primary btn-submit">Продолжить</button>
+</form>

@@ -7,9 +7,15 @@ class Component {
 
     constructor() {
         this.id = this.constructor.name.toLowerCase();
-        this.$container = $(`#${this.id}`);
+    }
+
+    init() {
         this.onInit();
         this.initTemplates();
+    }
+
+    setContainer($container) {
+        this.$container = $container;
     }
 
     $dom(selector) {

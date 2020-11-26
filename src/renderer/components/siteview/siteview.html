@@ -1,0 +1,137 @@
+<div class="card site-status">
+    <div class="card-body">
+        <div class="details">
+            <div class="flex-row">
+                <div class="title">Версия</div>
+                <div class="value">
+                    <i class="fa fa-fw fa-dot-circle-o"></i>
+                    <span data-bind="version" class="click-to-copy"></span>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="title">Дата публикации</div>
+                <div class="value">
+                    <i class="fa fa-fw fa-calendar"></i>
+                    <span data-method="getDeployStatus"></span>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="title">Последнее обновление</div>
+                <div class="value">
+                    <i class="fa fa-fw fa-calendar"></i>
+                    <span data-method="getUpdateStatus"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card site-details">
+    <div class="card-body">
+        <div class="details">
+            <div class="flex-row">
+                <div class="title">Адрес сайта</div>
+                <div class="value">
+                    <i class="fa fa-fw fa-link"></i>
+                    <a class="shell-link" data-bind="url" data-bind-href="url"></a>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="title">Локальная папка</div>
+                <div class="value">
+                    <i class="fa fa-fw fa-folder-o"></i>
+                    <a class="shell-path" data-bind="localDir" data-bind-href="localDir"></a>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="title">Репозиторий</div>
+                <div class="value">
+                    <i class="fa fa-fw fa-git"></i>
+                    <a class="shell-link" data-bind="gitRepo" data-bind-href="gitRepo"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card server-details">
+    <div class="card-header">Параметры сервера</div>
+    <div class="card-body">
+        <div class="details">
+            <div class="flex-row" data-if="serverDir">
+                <div class="title">Хост сервера</div>
+                <div class="value">
+                    <i class="fa fa-fw fa-server"></i>
+                    <span data-bind="serverHost" class="click-to-copy"></span>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="title">Доступ по SSH</div>
+                <div class="value">
+                    <i class="fa fa-fw fa-terminal"></i>
+                    <span data-method="getConnectionCommand" class="click-to-copy"></span>
+                </div>
+            </div>
+            <div class="flex-row" data-if="isDeployed">
+                <div class="title">Папка сайта на сервере</div>
+                <div class="value">
+                    <i class="fa fa-fw fa-folder-o"></i>
+                    <span data-bind="serverDir" class="click-to-copy"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card config-details">
+    <div class="card-header">Параметры публикации</div>
+    <div class="card-body" data-not="isDeployed">
+        <div class="text-muted">Сайт не опубликован, параметры не заданы</div>
+    </div>
+    <div class="card-body" data-if="isDeployed">
+        <div class="details">
+            <div class="flex-row">
+                <div class="title">База данных MySQL</div>
+                <div class="value">
+                    <i class="fa fa-fw fa-database"></i>
+                    <span data-bind="config.MYSQL_DATABASE" class="click-to-copy"></span>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="title">Пользователь MySQL</div>
+                <div class="value">
+                    <i class="fa fa-fw fa-user"></i>
+                    <span data-bind="config.MYSQL_USER" class="click-to-copy"></span>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="title">Пароль MySQL</div>
+                <div class="value">
+                    <i class="fa fa-fw fa-key"></i>
+                    <span data-bind="config.MYSQL_PASSWORD" class="click-to-copy"></span>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="title">Пароль root MySQL</div>
+                <div class="value">
+                    <i class="fa fa-fw fa-key"></i>
+                    <span data-bind="config.MYSQL_ROOT_PASSWORD" class="click-to-copy"></span>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="title">Порт веб-сервера</div>
+                <div class="value">
+                    <i class="fa fa-fw fa-plug"></i>
+                    <span data-bind="config.HTTP_PORT" class="click-to-copy"></span>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="title">Порт phpMyAdmin</div>
+                <div class="value">
+                    <i class="fa fa-fw fa-plug"></i>
+                    <span data-bind="config.PHPMYADMIN_PORT" class="click-to-copy"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

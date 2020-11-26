@@ -127,7 +127,7 @@ form .flex-row {
     background:#f1f2f6;
 }
 
-.workspace .components {
+#app-components {
     padding:20px;
 }
 

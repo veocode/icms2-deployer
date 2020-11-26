@@ -5,30 +5,38 @@ const validatorService = load.service('validator');
 
 class Deployer extends Component {
 
+    deployService = load.service('deploy');
+
     site;
+    credentialsForm;
 
-    $formPanel = this.$dom('.form-panel');
-    $logPanel = this.$dom('.log-panel');
-    $log = this.$dom('.log');
-    $btnDone = this.$dom('.btn-done');
-    $terminal = this.$dom('.terminal');
-    $terminalView = this.$dom('.terminal-view');
-
-    deployService = require('../services/deploy');
-
-    credentialsForm = new FormHandler('#deployer form', (deployConfig, form) => {
-        form.startLoading();
-        validatorService.validateDeployment(this.site, deployConfig, (isValid, error) => {
-            form.endLoading();
-            if (!isValid) {
-                app.alert(error, 'warning');
-                return;
-            }
-            this.deploy(deployConfig);
-        });
-    });
+    $formPanel;
+    $logPanel;
+    $log;
+    $btnDone;
+    $terminal;
+    $terminalView;
 
     onInit() {
+        this.$formPanel = this.$dom('.form-panel');
+        this.$logPanel = this.$dom('.log-panel');
+        this.$log = this.$dom('.log');
+        this.$btnDone = this.$dom('.btn-done');
+        this.$terminal = this.$dom('.terminal');
+        this.$terminalView = this.$dom('.terminal-view');
+
+        this.credentialsForm = new FormHandler('#deployer form', (deployConfig, form) => {
+            form.startLoading();
+            validatorService.validateDeployment(this.site, deployConfig, (isValid, error) => {
+                form.endLoading();
+                if (!isValid) {
+                    app.alert(error, 'warning');
+                    return;
+                }
+                this.deploy(deployConfig);
+            });
+        });
+
         this.$dom('.btn-done').click((e) => {
             e.preventDefault();
             app.openSite(this.site);

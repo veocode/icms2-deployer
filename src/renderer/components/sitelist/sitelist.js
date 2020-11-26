@@ -3,8 +3,12 @@ const Component = load.class('component');
 
 class SiteList extends Component {
 
-    $siteList = this.$dom('.list');
+    $siteList;
     sites = [];
+
+    onInit() {
+        this.$siteList = this.$dom('.list');
+    }
 
     onActivation() {
         app.setTitle('Мои сайты');

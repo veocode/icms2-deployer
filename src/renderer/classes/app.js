@@ -24,10 +24,11 @@ class App {
     //
 
     dom = {
-        $title: $('.header .title'),
-        $toolbar: $('.header .toolbar'),
-        $backBtn: $('.nav-back .btn'),
-        $workspace: $('.workspace')
+        $title: $('#app-title'),
+        $toolbar: $('#app-toolbar'),
+        $backBtn: $('#app-btn-back'),
+        $workspace: $('#app-workspace'),
+        $components: $('#app-components')
     }
 
     config;
@@ -60,8 +61,20 @@ class App {
 
     initComponents() {
         this.components.forEach((componentName) => {
-            this.componentInstances[componentName] = load.component(componentName);
+            this.componentInstances[componentName] = this.makeComponent(componentName);
         });
+    }
+
+    makeComponent(componentName) {
+        const component = load.component(componentName);
+        const html = load.view(componentName);
+        if (html) {
+            const $view = $(`<div class="component" id="${componentName}"></div>`);
+            $view.html(html).appendTo(this.dom.$components);
+            component.setContainer($view);
+        }
+        component.init();
+        return component;
     }
 
     initControls() {
@@ -145,6 +158,10 @@ class App {
     }
 
     view(componentName, params, callback) {
+        if (!(componentName in this.componentInstances)) {
+            console.error(`Component not found: ${componentName}`);
+            return;
+        }
         if (this.currentComponent) {
             this.componentInstances[this.currentComponent].deactivate();
             this.resetToolbar();

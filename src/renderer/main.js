@@ -1,3 +1,11 @@
+const path = require('path');
+const fs = require('fs');
+
+//
+// Define Environment
+//
+global.rootDir = require('path').resolve(__dirname, '../../renderer');
+
 //
 // Define Import Helpers
 //
@@ -18,7 +26,7 @@ global.load = {
         return result;
     },
     module: (name) => {
-        return require(`./../../renderer/${name}`);
+        return require(`${rootDir}/${name}`);
     },
     class: (name) => {
         return load.module(`classes/${name}`);
@@ -27,11 +35,20 @@ global.load = {
         return load.module(`services/${name}`);
     },
     component: (name) => {
-        return load.module(`components/${name}`);
+        return load.module(`components/${name}/${name}`);
     },
     instance: (name) => {
         return new (load.class(name))();
+    },
+    view: (componentName, viewName) => {
+        viewName = viewName || componentName;
+        const filePath = `${rootDir}/components/${componentName}/${viewName}.html`;
+        if (!fs.existsSync(filePath)) {
+            return null;
+        }
+        return fs.readFileSync(filePath, { encoding: 'utf8' });
     }
+
 }
 
 

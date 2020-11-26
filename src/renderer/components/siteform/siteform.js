@@ -6,22 +6,24 @@ const validatorService = load.service('validator');
 
 class SiteForm extends Component {
 
-    form = new FormHandler('#siteform form', (values, form) => {
-        form.startLoading();
-        validatorService.validateSite(values, (isValid, error) => {
-            form.endLoading();
-            if (!isValid) {
-                app.alert(error, 'warning');
-                return;
-            }
-            this.result(values);
-        });
-    });
+    form;
 
     onInit() {
         const $inputDir = this.$dom('#input-dir');
         $inputDir.click((e) => {
             this.askSiteDir();
+        });
+
+        this.form = new FormHandler('#siteform form', (values, form) => {
+            form.startLoading();
+            validatorService.validateSite(values, (isValid, error) => {
+                form.endLoading();
+                if (!isValid) {
+                    app.alert(error, 'warning');
+                    return;
+                }
+                this.result(values);
+            });
         });
     }
 
