@@ -12,6 +12,7 @@ html, body {
 
 a {
     color:#3498db;
+    transition: all 0.3s;
 }
 
 a:hover {
@@ -125,6 +126,15 @@ form .flex-row {
     height: calc(100vh - 75px);
     overflow-y: auto;
     background:#f1f2f6;
+}
+
+.workspace .scroll-element {
+    opacity: 0;
+    transition: all 0.3s;
+}
+
+.workspace:hover .scroll-element {
+    opacity: 1;
 }
 
 #app-components {
