@@ -38,10 +38,15 @@ class FormHandler {
         this.$form.find('input[name]').val('');
     }
 
-    setValues(values) {
+    setValues(values, prefix) {
+        if (!values) { return; }
+        prefix = prefix || '';
         Object.keys(values).forEach((name) => {
             const value = values[name];
-            this.$form.find(`input[name=${name}]`).val(value);
+            if (typeof value == 'object') {
+                this.setValues(value, name + '.');
+            }
+            this.$form.find(`input[name="${prefix}${name}"]`).val(value);
         });
     }
 
@@ -49,10 +54,11 @@ class FormHandler {
         let values = {};
         this.$form.find('input[name]').each((i, input) => {
             const $input = $(input);
+            const fieldPath = $input.attr('name');
             let value = $input.val();
             if (value == 'true') { value = true; }
             if (value == 'false') { value = false; }
-            values[$input.attr('name')] = value;
+            deep.set(values, fieldPath, value);
         });
         return values;
     }

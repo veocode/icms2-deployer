@@ -22,7 +22,7 @@ class SiteForm extends Component {
                     app.alert(error, 'warning');
                     return;
                 }
-                this.result(values);
+                this.result($.extend(settings.defaultSite, values));
             });
         });
     }

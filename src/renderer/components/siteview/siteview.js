@@ -57,7 +57,7 @@ class SiteView extends Component {
 
         let toolbar = [
             editBtn, deleteBtn, '-',
-            this.site.isDeployed ? updateBtn : deployBtn
+            this.site.deploy.done ? updateBtn : deployBtn
         ];
 
         app.setToolbar(toolbar);

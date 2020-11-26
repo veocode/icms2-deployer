@@ -23,6 +23,7 @@ class Component {
     }
 
     bind(data, $rootElement, prefix) {
+        if (!data) { return; }
         prefix = prefix || '';
         const bindableAttrs = ['href', 'title', 'class', 'value'];
         const component = this;

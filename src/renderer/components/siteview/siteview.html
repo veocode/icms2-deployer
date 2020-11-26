@@ -72,7 +72,7 @@
                     <span data-method="getConnectionCommand" class="click-to-copy"></span>
                 </div>
             </div>
-            <div class="flex-row" data-if="isDeployed">
+            <div class="flex-row" data-if="deploy.done">
                 <div class="title">Папка сайта на сервере</div>
                 <div class="value">
                     <i class="fa fa-fw fa-folder-o"></i>
@@ -85,10 +85,10 @@
 
 <div class="card config-details">
     <div class="card-header">Параметры публикации</div>
-    <div class="card-body" data-not="isDeployed">
+    <div class="card-body" data-not="deploy.done">
         <div class="text-muted">Сайт не опубликован, параметры не заданы</div>
     </div>
-    <div class="card-body" data-if="isDeployed">
+    <div class="card-body" data-if="deploy.done">
         <div class="details">
             <div class="flex-row">
                 <div class="title">База данных MySQL</div>
