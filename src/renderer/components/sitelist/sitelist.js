@@ -4,7 +4,7 @@ const Component = load.class('component');
 class SiteList extends Component {
 
     $siteList;
-    sites = [];
+    sites = {};
 
     onInit() {
         this.$siteList = this.$dom('.list');
@@ -14,9 +14,9 @@ class SiteList extends Component {
         app.setTitle('Мои сайты');
         this.buildSiteList();
         this.bind({
-            'isSites': this.sites.length > 0
+            'isSites': this.hasSites()
         });
-        if (this.sites.length > 0) {
+        if (this.hasSites()) {
             app.setToolbar([{
                 hint: 'Добавить сайт',
                 icon: 'plus',
@@ -33,8 +33,9 @@ class SiteList extends Component {
     }
 
     buildSiteList() {
-        this.sites = app.config.get('sites', [], true);
-        this.sites.forEach((site) => {
+        this.sites = app.config.get('sites', {}, true);
+        Object.keys(this.sites).forEach((id) => {
+            const site = this.sites[id];
             const $item = this.render('list-item', site);
             $item.click((e) => {
                 e.preventDefault();
@@ -42,6 +43,10 @@ class SiteList extends Component {
             });
             this.$siteList.append($item);
         });
+    }
+
+    hasSites() {
+        return this.sites && Object.keys(this.sites) > 0;
     }
 
 }

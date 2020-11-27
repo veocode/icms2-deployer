@@ -21,7 +21,8 @@ module.exports = {
             host: '134.209.26.140',
             port: '22',
             user: 'root',
-            password: ''
+            password: '',
+            dir: ''
         },
         deploy: {
             done: false,
@@ -34,8 +35,8 @@ module.exports = {
         cert: {
             done: false,
             date: null,
-            email: null,
-            domain: null
+            email: '',
+            domain: ''
         },
         config: {
             HTTP_PORT: 80,

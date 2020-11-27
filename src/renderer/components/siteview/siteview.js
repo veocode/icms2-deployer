@@ -39,6 +39,24 @@ class SiteView extends Component {
             }
         };
 
+        const makeCertBtn = {
+            hint: 'Установить SSL-сертификат',
+            icon: ['plus', 'lock'],
+            class: 'success',
+            click: () => {
+                app.certMakeForSite(this.site);
+            }
+        };
+
+        const renewCertBtn = {
+            hint: 'Обновить SSL-сертификат',
+            icon: ['refresh', 'lock'],
+            class: 'info',
+            click: () => {
+
+            }
+        };
+
         const deployBtn = {
             title: 'Публиковать',
             class: 'info',
@@ -56,7 +74,10 @@ class SiteView extends Component {
         };
 
         let toolbar = [
-            editBtn, deleteBtn, '-',
+            editBtn,
+            deleteBtn,
+            this.site.cert.done ? renewCertBtn : makeCertBtn,
+            '-',
             this.site.deploy.done ? updateBtn : deployBtn
         ];
 
@@ -86,6 +107,22 @@ class SiteView extends Component {
             return `<span>${date}</span>`;
         }
         return `<span class="text-muted">Сайт не обновлялся</span>`;
+    }
+
+    getCertExpiration() {
+        if (this.site.cert.done) {
+            const date = moment(this.site.cert.date).locale('ru').calendar();
+            return `<span>${date}</span>`;
+        }
+        return `<span class="text-muted">Сертификат не установлен</span>`;
+    }
+
+    getCertEmail() {
+        if (this.site.cert.done) {
+            const email = this.site.cert.email;
+            return `<a class="shell-link" href="mailto:${email}">${email}</span>`;
+        }
+        return `<span class="text-muted">Сертификат не установлен</span>`;
     }
 
 }

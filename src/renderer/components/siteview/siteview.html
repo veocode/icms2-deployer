@@ -58,7 +58,7 @@
     <div class="card-header">Параметры сервера</div>
     <div class="card-body">
         <div class="details">
-            <div class="flex-row" data-if="serverDir">
+            <div class="flex-row">
                 <div class="title">Хост сервера</div>
                 <div class="value">
                     <i class="fa fa-fw fa-server"></i>
@@ -77,6 +77,28 @@
                 <div class="value">
                     <i class="fa fa-fw fa-folder-o"></i>
                     <span data-bind="server.dir" class="click-to-copy"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card cert-details">
+    <div class="card-header">SSL-сертификат</div>
+    <div class="card-body">
+        <div class="details">
+            <div class="flex-row">
+                <div class="title">Истекает через</div>
+                <div class="value">
+                    <i class="fa fa-fw fa-calendar"></i>
+                    <span data-method="getCertExpiration"></span>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="title">E-mail для уведомлений</div>
+                <div class="value">
+                    <i class="fa fa-fw fa-envelope-o"></i>
+                    <span data-method="getCertEmail"></span>
                 </div>
             </div>
         </div>

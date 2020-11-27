@@ -15,6 +15,7 @@
   "keywords": [],
   "license": "ISC",
   "dependencies": {
+    "glob": "^7.1.6",
     "hw-fingerprint": "^2.0.0",
     "moment": "^2.29.1",
     "ssh2": "^0.8.9",

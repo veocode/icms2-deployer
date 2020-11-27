@@ -1,4 +1,5 @@
 const { remote, shell, clipboard } = load.node('electron');
+const { URL } = load.node('url');
 const Config = load.class('config');
 const encryptService = load.service('encrypt');
 
@@ -139,8 +140,12 @@ class App {
                 $button.attr('title', button.hint);
             }
             if (button.icon) {
-                let $icon = $('<i class="fa"></i>').appendTo($button);
-                $icon.addClass(`fa-${button.icon}`);
+                let icons = typeof button.icon == 'object' ? button.icon : [button.icon];
+                console.log('icons', icons);
+                icons.forEach((icon) => {
+                    let $icon = $('<i class="fa"></i>').appendTo($button);
+                    $icon.addClass(`fa-${icon}`);
+                });
             }
             if (button.title) {
                 let $title = $('<span></span>').appendTo($button);
@@ -189,6 +194,9 @@ class App {
     alert(message, type, title) {
         type = type || "info";
         title = title || this.title;
+        if (typeof message == 'object') {
+            message = message.join('\n');
+        }
         remote.dialog.showMessageBox(remote.getCurrentWindow(), {
             type: type,
             title: title,
@@ -246,40 +254,58 @@ class App {
         this.view('deployer', site);
     }
 
+    certMakeForSite(site) {
+        if (!site.deploy.done) {
+            const domain = this.getDomainFromURL(site.url);
+            const text = [
+                'Перед созданием SSL-сертификата необходимо: ',
+                '1) Опубликовать сайт на сервере; ',
+                `2) Привязать домен ${domain} к серверу ${site.server.host};`,
+                '',
+                `Повторите попытку после того, как сайт будет опубликован и станет доступен по адресу http://${domain}/`
+            ];
+            this.alert(text, 'info');
+            return;
+        }
+
+        this.view('certmaker', site);
+    }
+
     saveAddedSite(site) {
-        let sites = this.config.get('sites', []);
-        site.id = sites.length + 1;
-        sites.push(site);
+        let sites = this.config.get('sites', {});
+        site.id = Object.keys(sites).length + 1;
+        sites[site.id] = site;
         this.config.set('sites', sites);
         this.stepBack();
     }
 
     saveUpdatedSite(site) {
-        let sites = this.config.get('sites', []);
-        sites.forEach((storedSite, i) => {
-            if (storedSite.id == site.id) {
-                sites[i] = site;
-            }
-        });
-        this.config.set('sites', sites);
+        let sites = this.config.get('sites', {});
+        if (site.id in sites) {
+            sites[site.id] = site;
+            this.config.set('sites', sites);
+        }
     }
 
     deleteSite(site) {
-        let sites = this.config.get('sites', []);
-        let updatedSites = [];
-        sites.forEach((storedSite, i) => {
-            if (storedSite.id != site.id) {
-                updatedSites.push(storedSite);
-            }
-        });
-        this.config.set('sites', updatedSites);
+        let sites = this.config.get('sites', {});
+        if (site.id in sites) {
+            delete sites[site.id];
+            this.config.set('sites', sites);
+        }
+    }
+
+    getSite(id) {
+        const sites = this.config.get('sites', {});
+        return id in sites ? sites[id] : null;
     }
 
     getSiteByField(fieldName, value) {
-        let sites = this.config.get('sites', []);
+        const sites = this.config.get('sites', {});
         let foundSite = null;
-        sites.forEach((storedSite, i) => {
+        Object.keys(sites).forEach((id) => {
             if (foundSite) { return; }
+            const storedSite = sites[id];
             if (storedSite[fieldName] == value) {
                 foundSite = storedSite;
             }
@@ -288,7 +314,16 @@ class App {
     }
 
     isSiteExists(fieldName, value) {
+        if (fieldName == 'id') {
+            let sites = this.config.get('sites', {});
+            return value in sites;
+        }
         return this.getSiteByField(fieldName, value) !== null;
+    }
+
+    getDomainFromURL(url) {
+        let parsedURL = new URL(url);
+        return parsedURL.host;
     }
 
 }

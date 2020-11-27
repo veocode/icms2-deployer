@@ -6,7 +6,9 @@ const validatorService = load.service('validator');
 
 class SiteForm extends Component {
 
+    site;
     form;
+    mode = 'add';
 
     onInit() {
         const $inputDir = this.$dom('#input-dir');
@@ -16,13 +18,13 @@ class SiteForm extends Component {
 
         this.form = new FormHandler('#siteform form', (values, form) => {
             form.startLoading();
-            validatorService.validateSite(values, (isValid, error) => {
+            validatorService.validateSite(this.mode, values, (isValid, error) => {
                 form.endLoading();
                 if (!isValid) {
                     app.alert(error, 'warning');
                     return;
                 }
-                this.result($.extend(settings.defaultSite, values));
+                this.result($.extend(this.site, values));
             });
         });
     }
@@ -44,7 +46,12 @@ class SiteForm extends Component {
     }
 
     onActivation(site) {
+        this.mode = site.id ? 'edit' : 'add';
         const title = site.id ? 'Редактировать сайт' : 'Добавить сайт';
+        if (this.mode == 'add') {
+            site = $.extend(settings.defaultSite, site);
+        }
+        this.site = site;
         app.setTitle(title, 'sitelist');
         this.form.setValues(site);
         app.setToolbar([{

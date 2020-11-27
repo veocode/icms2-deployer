@@ -1,12 +1,11 @@
-const glob = load.node('glob');
 const Component = load.class('component');
 const FormHandler = load.class('formhandler');
 const validatorService = load.service('validator');
 
 
-class Deployer extends Component {
+class CertMaker extends Component {
 
-    deployService = load.service('deploy');
+    certMakeService = load.service('certmake');
 
     site;
     configForm;
@@ -26,16 +25,8 @@ class Deployer extends Component {
         this.$terminal = this.$dom('.terminal');
         this.$terminalView = this.$dom('.terminal-view');
 
-        this.configForm = new FormHandler('#deployer-form', (deployConfig, form) => {
-            form.startLoading();
-            validatorService.validateDeployment(this.site, deployConfig, (isValid, error) => {
-                form.endLoading();
-                if (!isValid) {
-                    app.alert(error, 'warning');
-                    return;
-                }
-                this.deploy(deployConfig);
-            });
+        this.configForm = new FormHandler('#certmaker-form', (certConfig, form) => {
+            this.makeCert(certConfig);
         });
 
         this.$dom('.btn-done').click((e) => {
@@ -53,9 +44,6 @@ class Deployer extends Component {
         this.$terminal.empty().html('');
         this.configForm.setValues(settings.defaultSite.config);
         app.setTitle('Публикация сайта', 'siteview', this.site);
-        this.bind($.extend(this.site, {
-            'isDumpFound': this.isSiteContainsDump()
-        }));
     }
 
     onDeactivation() {
@@ -63,19 +51,14 @@ class Deployer extends Component {
         this.configForm.resetValues();
     }
 
-    deploy(config) {
+    makeCert(config) {
         this.$formPanel.hide();
         this.$logPanel.show();
 
-        this.site.config = config;
-        this.site.config.PHPMYADMIN_INSTALL = 'y';
+        this.site.cert.domain = config.domain;
+        this.site.cert.email = config.email;
 
-        if (!config.PHPMYADMIN_PORT) {
-            this.site.config.PHPMYADMIN_INSTALL = 'n';
-            this.site.config.PHPMYADMIN_PORT = 8080;
-        }
-
-        this.deployService.start({
+        this.certMakeService.start({
             site: this.site,
             onLog: (logMessage) => {
                 this.log(logMessage);
@@ -88,16 +71,9 @@ class Deployer extends Component {
 
     done(isSuccess) {
         if (isSuccess) {
-            this.site.deploy.done = true;
-            this.site.deploy.date = Date.now();
-
-            let url = this.site.url;
-            if (this.site.config.HTTP_PORT != 80) {
-                url += `:${this.site.config.HTTP_PORT}`;
-            }
-            url += '/';
-
-            this.log({ text: `Готово! Ваш сайт: <a class="shell-link" href="${url}">${url}</a>`, type: 'done' });
+            this.site.cert.done = true;
+            this.site.cert.date = Date.now();
+            this.log({ text: `Готово!`, type: 'done' });
         }
 
         app.saveUpdatedSite(this.site);
@@ -115,12 +91,6 @@ class Deployer extends Component {
         this.$log.append($message);
     }
 
-    isSiteContainsDump() {
-        const isDump = glob.sync('*.sql', { cwd: this.site.localDir }).length > 0;
-        console.log('isSiteContainsDump', this.site.localDir, isDump);
-        return isDump;
-    }
-
 }
 
-module.exports = new Deployer();
+module.exports = new CertMaker();

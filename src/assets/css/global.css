@@ -115,6 +115,11 @@ form .flex-row {
     padding-left:5px;
 }
 
+
+.header .toolbar .btn .fa+.fa{
+    padding-left:2px;
+}
+
 .header .toolbar .spacer {
     display:inline-block;
     height:1px;
@@ -268,21 +273,17 @@ form .flex-row {
     margin-top:20px;
 }
 
-#deployer .col-form-label span[data-bind] {
-    font-weight: bold;
-}
-
-#deployer .log-panel {
+.task-runner .log-panel {
     display: flex;
     flex-direction: row;
 }
 
-#deployer .log-view {
+.task-runner .log-view {
     width:335px;
 }
 
-#deployer .log,
-#deployer .log .message {
+.task-runner .log,
+.task-runner .log .message {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -290,7 +291,7 @@ form .flex-row {
     font-size:14px;
 }
 
-#deployer .log .message::before {
+.task-runner .log .message::before {
     display: inline-block;
     font: normal normal normal 14px/1 FontAwesome;
     font-size: inherit;
@@ -303,26 +304,26 @@ form .flex-row {
     color: #20bf6b;
 }
 
-#deployer .log .message-hint::before{
+.task-runner .log .message-hint::before{
     content: "\f05a";
     color: #57606f;
 }
 
-#deployer .log .message-error::before {
+.task-runner .log .message-error::before {
     content: "\f00d";
     color: #b33939;
 }
 
-#deployer .log .message-hint { color: #57606f; }
-#deployer .log .message-error { color: #b33939; }
+.task-runner .log .message-hint { color: #57606f; }
+.task-runner .log .message-error { color: #b33939; }
 
-#deployer .log .message:not(.message-error):not(.message-done):last-child::before {
+.task-runner .log .message:not(.message-error):not(.message-done):last-child::before {
     animation: fa-spin 2s infinite linear;
     content: "\f110";
     color: #2b2b2b;
 }
 
-#deployer .terminal-view {
+.task-runner .terminal-view {
     flex:1;
     margin-left: 10px;
     display:block;
@@ -335,18 +336,18 @@ form .flex-row {
     overflow-y: auto;
 }
 
-#deployer .terminal {
+.task-runner .terminal {
     white-space: pre;
     font-family: 'Ubuntu Mono', monospace;
     color:#DDD;
     font-size:14px;
 }
 
-#deployer .terminal .line-stderr {
+.task-runner .terminal .line-stderr {
     color: #de9c76;
 }
 
-#deployer .terminal .line-exec {
+.task-runner .terminal .line-exec {
     color: #00c4ff;
     margin-top:5px;
 }

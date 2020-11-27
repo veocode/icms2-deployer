@@ -18,7 +18,7 @@ class DeployService extends TaskRunner {
 
     onStart() {
         this.site.git.dsn = this.gitService.getRepoDSN(this.site.git);
-        this.site.serverDir = settings.serverSiteRoot + '/' + this.site.name;
+        this.site.server.dir = settings.serverSiteRoot + '/' + this.site.name;
     }
 
     //
@@ -106,7 +106,7 @@ class DeployService extends TaskRunner {
 
     serverCheckoutICMSDocker() {
         this.log(`Клонируем icms2-docker в папку сайта...`);
-        this.sshService.exec(`git clone ${settings.icms2dockerRepoUrl} ${this.site.serverDir}`, settings.serverSiteRoot, (isSuccess) => {
+        this.sshService.exec(`git clone ${settings.icms2dockerRepoUrl} ${this.site.server.dir}`, settings.serverSiteRoot, (isSuccess) => {
             if (!isSuccess) {
                 this.halt('Не удалось клонировать icms2-docker');
                 return;
@@ -128,12 +128,12 @@ class DeployService extends TaskRunner {
 
         let command = `rm -f .env && touch .env && printf "${envText}" > .env`;
 
-        this.sshService.exec(command, this.site.serverDir, (isSuccess) => {
+        this.sshService.exec(command, this.site.server.dir, (isSuccess) => {
             if (!isSuccess) {
                 this.halt('Не удалось создать конфигурацию icms2-docker');
                 return;
             }
-            this.sshService.exec('cat .env', this.site.serverDir, (isSuccess) => {
+            this.sshService.exec('cat .env', this.site.server.dir, (isSuccess) => {
                 if (!isSuccess) {
                     this.halt('Не удалось вывести конфигурацию');
                     return;
@@ -152,7 +152,7 @@ class DeployService extends TaskRunner {
             command += ' --with-pma';
         }
 
-        this.sshService.exec(command, this.site.serverDir, (isSuccess) => {
+        this.sshService.exec(command, this.site.server.dir, (isSuccess) => {
             if (!isSuccess) {
                 this.halt('Не удалось запустить icms2-docker');
                 return;

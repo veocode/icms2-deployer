@@ -1,0 +1,44 @@
+<div class="task-runner">
+
+    <div class="form-panel">
+        <form id="certmaker-form" class="m-0">
+            <div class="card">
+                <div class="card-body">
+                    <div class="legend-hint text-muted">
+                        Введите необходимые данные для выпуска сертификата
+                    </div>
+                    <div class="flex-row">
+                        <div class="title">Домен сертификата</div>
+                        <div class="value">
+                            <input name="domain" type="text" class="form-control"
+                                data-val-required="Укажите домен сертификата" placeholder="domain.com" value="">
+                        </div>
+                    </div>
+                    <div class="flex-row">
+                        <div class="title">E-mail для уведомлений</div>
+                        <div class="value">
+                            <input name="email" type="text" class="form-control"
+                                data-val-required="Укажите E-mail для уведомлений" data-val-regexp="^\S+@\S+\.\S+$"
+                                data-val-message="Указан некорректный адрес e-mail" placeholder="owner@domain.com"
+                                value="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-success btn-submit">Создать сертификат</button>
+        </form>
+    </div>
+
+    <div class="log-panel">
+        <div class="log-view">
+            <ul class="log">
+                <li></li>
+            </ul>
+            <button class="btn btn-primary btn-done mt-4" style="display: none">Продолжить</button>
+        </div>
+        <div class="terminal-view">
+            <div class="terminal"></div>
+        </div>
+    </div>
+
+</div>

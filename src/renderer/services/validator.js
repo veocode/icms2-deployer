@@ -5,20 +5,21 @@ const shellService = load.service('shell');
 
 class ValidatorService {
 
-    validateSite(values, callback) {
+    validateSite(mode, values, callback) {
 
         if (!this.isFolderContainsICMS2(values.localDir)) {
             callback(false, `InstantCMS 2 не найдена в указанной папке:\n${values.localDir}`);
             return;
         }
 
-        if (window.app.isSiteExists('localDir', values.localDir)) {
-            callback(false, `Сайт из этой папки уже был добавлен:\n${values.localDir}`);
-            return;
+        if (mode == 'add') {
+            if (window.app.isSiteExists('localDir', values.localDir)) {
+                callback(false, `Сайт из этой папки уже был добавлен:\n${values.localDir}`);
+                return;
+            }
         }
 
         callback(true);
-
     }
 
     validateDeployment(site, config, callback) {

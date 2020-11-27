@@ -6,7 +6,7 @@ const encryptService = load.service('encrypt');
 class Config {
 
     values = {
-        'sites': [],
+        'sites': {},
     };
 
     constructor() {
