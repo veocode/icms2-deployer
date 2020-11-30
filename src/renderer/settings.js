@@ -9,6 +9,7 @@ module.exports = {
     defaultSite: {
         name: '',
         url: '',
+        domain: '',
         localDir: '',
         version: '1.0.0',
         git: {
@@ -36,7 +37,8 @@ module.exports = {
             done: false,
             date: null,
             email: '',
-            domain: ''
+            domain: '',
+            isForceHTTPS: false
         },
         config: {
             HTTP_PORT: 80,

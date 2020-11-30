@@ -16,7 +16,8 @@ class App {
         'sitelist',
         'siteform',
         'siteview',
-        'deployer'
+        'deployer',
+        'certmaker'
     ];
     defaultComponent = 'sitelist';
 
@@ -141,7 +142,6 @@ class App {
             }
             if (button.icon) {
                 let icons = typeof button.icon == 'object' ? button.icon : [button.icon];
-                console.log('icons', icons);
                 icons.forEach((icon) => {
                     let $icon = $('<i class="fa"></i>').appendTo($button);
                     $icon.addClass(`fa-${icon}`);

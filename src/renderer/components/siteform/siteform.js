@@ -24,7 +24,9 @@ class SiteForm extends Component {
                     app.alert(error, 'warning');
                     return;
                 }
-                this.result($.extend(this.site, values));
+                let site = $.extend(this.site, values);
+                site.domain = app.getDomainFromURL(site.url);
+                this.result(site);
             });
         });
     }

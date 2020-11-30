@@ -1,3 +1,4 @@
+const fs = load.node('fs');
 const glob = load.node('glob');
 const Component = load.class('component');
 const FormHandler = load.class('formhandler');
@@ -67,13 +68,22 @@ class Deployer extends Component {
         this.$formPanel.hide();
         this.$logPanel.show();
 
+        if (config.makeProdConfig) {
+            this.makeProdConfig(config);
+        }
+
+        delete config.makeProdConfig;
+
         this.site.config = config;
         this.site.config.PHPMYADMIN_INSTALL = 'y';
+        this.site.config.HTTP_HOST = this.site.domain;
 
         if (!config.PHPMYADMIN_PORT) {
             this.site.config.PHPMYADMIN_INSTALL = 'n';
             this.site.config.PHPMYADMIN_PORT = 8080;
         }
+
+        app.saveUpdatedSite(this.site);
 
         this.deployService.start({
             site: this.site,
@@ -95,7 +105,6 @@ class Deployer extends Component {
             if (this.site.config.HTTP_PORT != 80) {
                 url += `:${this.site.config.HTTP_PORT}`;
             }
-            url += '/';
 
             this.log({ text: `Готово! Ваш сайт: <a class="shell-link" href="${url}">${url}</a>`, type: 'done' });
         }
@@ -117,8 +126,30 @@ class Deployer extends Component {
 
     isSiteContainsDump() {
         const isDump = glob.sync('*.sql', { cwd: this.site.localDir }).length > 0;
-        console.log('isSiteContainsDump', this.site.localDir, isDump);
         return isDump;
+    }
+
+    makeProdConfig(config) {
+        const baseConfigFile = `${this.site.localDir}/system/config/config.php`;
+        const prodConfigFile = `${this.site.localDir}/system/config/config.prod.php`;
+
+        let baseConfig = fs.readFileSync(baseConfigFile, { encoding: 'utf8' });
+
+        let values = {
+            host: this.site.url,
+            db_host: 'mysql',
+            db_base: config.MYSQL_DATABASE,
+            db_user: config.MYSQL_USER,
+            db_pass: config.MYSQL_PASSWORD,
+        }
+
+        Object.keys(values).forEach((key) => {
+            const value = values[key];
+            const regExp = new RegExp(`('${key}'\\t*\\s*=>\\t*\\s*')(.*)(',)`);
+            baseConfig = baseConfig.replace(regExp, `$1${value}$3`);
+        });
+
+        fs.writeFileSync(prodConfigFile, baseConfig);
     }
 
 }

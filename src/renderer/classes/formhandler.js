@@ -55,9 +55,10 @@ class FormHandler {
         this.$form.find('input[name]').each((i, input) => {
             const $input = $(input);
             const fieldPath = $input.attr('name');
-            let value = $input.val();
-            if (value == 'true') { value = true; }
-            if (value == 'false') { value = false; }
+            const isCheckbox = $input.attr('type') == 'checkbox';
+            let value = isCheckbox ? $input.prop('checked') : $input.val();
+            if (value === 'true') { value = true; }
+            if (value === 'false') { value = false; }
             deep.set(values, fieldPath, value);
         });
         return values;

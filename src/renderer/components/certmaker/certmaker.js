@@ -42,8 +42,11 @@ class CertMaker extends Component {
         this.$logPanel.hide();
         this.$log.empty();
         this.$terminal.empty().html('');
-        this.configForm.setValues(settings.defaultSite.config);
-        app.setTitle('Публикация сайта', 'siteview', this.site);
+        this.configForm.setValues({
+            domain: this.site.domain,
+            email: '',
+        });
+        app.setTitle('Выпуск сертификата', 'siteview', this.site);
     }
 
     onDeactivation() {
@@ -57,6 +60,7 @@ class CertMaker extends Component {
 
         this.site.cert.domain = config.domain;
         this.site.cert.email = config.email;
+        this.site.cert.isForceHTTPS = config.isForceHTTPS;
 
         this.certMakeService.start({
             site: this.site,
@@ -73,6 +77,9 @@ class CertMaker extends Component {
         if (isSuccess) {
             this.site.cert.done = true;
             this.site.cert.date = Date.now();
+            if (this.site.cert.isForceHTTPS) {
+                this.site.url = `https://${this.site.domain}/`;
+            }
             this.log({ text: `Готово!`, type: 'done' });
         }
 

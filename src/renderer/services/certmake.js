@@ -30,6 +30,10 @@ class CertMakeService extends TaskRunner {
 
         let command = `./init.sh makecert ${this.site.cert.email} ${this.site.cert.domain}`;
 
+        if (this.site.cert.isForceHTTPS) {
+            command += ' --force-https';
+        }
+
         this.sshService.exec(command, this.site.server.dir, (isSuccess) => {
             if (!isSuccess) {
                 this.halt('Не удалось выпустить сертификат');
