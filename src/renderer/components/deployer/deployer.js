@@ -74,14 +74,10 @@ class Deployer extends Component {
 
         delete config.makeProdConfig;
 
-        this.site.config = config;
-        this.site.config.PHPMYADMIN_INSTALL = 'y';
-        this.site.config.HTTP_HOST = this.site.domain;
+        config.PHPMYADMIN_INSTALL = config.PHPMYADMIN_INSTALL ? 'y' : 'n';
+        config.HTTP_HOST = this.site.domain;
 
-        if (!config.PHPMYADMIN_PORT) {
-            this.site.config.PHPMYADMIN_INSTALL = 'n';
-            this.site.config.PHPMYADMIN_PORT = 8080;
-        }
+        this.site.config = config;
 
         app.saveUpdatedSite(this.site);
 
@@ -125,8 +121,7 @@ class Deployer extends Component {
     }
 
     isSiteContainsDump() {
-        const isDump = glob.sync('*.sql', { cwd: this.site.localDir }).length > 0;
-        return isDump;
+        return glob.sync('*.sql', { cwd: this.site.localDir }).length > 0;
     }
 
     makeProdConfig(config) {

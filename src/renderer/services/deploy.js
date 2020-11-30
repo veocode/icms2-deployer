@@ -148,7 +148,7 @@ class DeployService extends TaskRunner {
 
         let command = `./init.sh deploy ${this.site.git.dsn} --skip-wizard`;
 
-        if (this.site.config.PHPMYADMIN_PORT) {
+        if (this.site.config.PHPMYADMIN_INSTALL == 'y') {
             command += ' --with-pma';
         }
 

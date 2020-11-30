@@ -110,19 +110,8 @@ class SiteView extends Component {
     }
 
     getCertExpiration() {
-        if (this.site.cert.done) {
-            const date = moment(this.site.cert.date).locale('ru').calendar();
-            return `<span>${date}</span>`;
-        }
-        return `<span class="text-muted">Сертификат не установлен</span>`;
-    }
-
-    getCertEmail() {
-        if (this.site.cert.done) {
-            const email = this.site.cert.email;
-            return `<a class="shell-link" href="mailto:${email}">${email}</span>`;
-        }
-        return `<span class="text-muted">Сертификат не установлен</span>`;
+        const date = moment(this.site.cert.date).locale('ru').calendar();
+        return `<span>${date}</span>`;
     }
 
 }

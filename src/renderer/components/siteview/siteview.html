@@ -85,20 +85,23 @@
 
 <div class="card cert-details">
     <div class="card-header">SSL-сертификат</div>
-    <div class="card-body">
+    <div class="card-body" data-not="cert.done">
+        <div class="text-muted">Сертификат не установлен</div>
+    </div>
+    <div class="card-body" data-if="cert.done">
         <div class="details">
             <div class="flex-row">
-                <div class="title">Истекает через</div>
+                <div class="title">Дата выпуска</div>
                 <div class="value">
                     <i class="fa fa-fw fa-calendar"></i>
-                    <span data-method="getCertExpiration"></span>
+                    <span data-method="getCertExpiration" class="click-to-copy"></span>
                 </div>
             </div>
             <div class="flex-row">
                 <div class="title">E-mail для уведомлений</div>
                 <div class="value">
                     <i class="fa fa-fw fa-envelope-o"></i>
-                    <span data-method="getCertEmail"></span>
+                    <span data-bind="cert.email" class="click-to-copy"></span>
                 </div>
             </div>
         </div>
