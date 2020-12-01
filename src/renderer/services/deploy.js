@@ -19,6 +19,7 @@ class DeployService extends TaskRunner {
     onStart() {
         this.site.git.dsn = this.gitService.getRepoDSN(this.site.git);
         this.site.server.dir = settings.serverSiteRoot + '/' + this.site.name;
+        app.saveUpdatedSite(this.site);
     }
 
     //
