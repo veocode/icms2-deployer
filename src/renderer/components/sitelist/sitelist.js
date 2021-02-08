@@ -16,16 +16,30 @@ class SiteList extends Component {
         this.bind({
             'isSites': this.hasSites()
         });
+
+        let toolbar = [];
+
         if (this.hasSites()) {
-            app.setToolbar([{
+            toolbar.push({
                 hint: 'Добавить сайт',
                 icon: 'plus',
                 class: 'info',
                 click: () => {
                     app.addSite();
                 }
-            }]);
+            });
         }
+
+        toolbar.push({
+            hint: 'О программе',
+            icon: 'question-circle',
+            class: 'success',
+            click: () => {
+                app.about();
+            }
+        });
+
+        app.setToolbar(toolbar);
     }
 
     onDeactivation() {

@@ -351,3 +351,41 @@ form .flex-row {
     color: #00c4ff;
     margin-top:5px;
 }
+
+#about .card {
+    text-align: center;
+}
+
+#about .card-body {
+    padding-top:40px;
+    padding-bottom:40px;
+}
+
+#about h3{
+    font-weight: lighter;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+#about .line {
+    padding-bottom:20px;
+    font-size:18px;
+    font-weight: lighter;
+}
+
+#about .line span{
+    display:block;
+    font-weight: bolder;
+}
+
+#about .version{
+    margin-bottom: 20px;
+}
+
+#about .line:last-child {
+    padding-bottom: 0;
+}
+
+#about .buttons {
+    margin-top:20px;
+}

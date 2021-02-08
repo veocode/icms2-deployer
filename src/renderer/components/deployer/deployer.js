@@ -1,5 +1,9 @@
+const moment = load.node('moment');
 const fs = load.node('fs');
 const glob = load.node('glob');
+
+const LogFile = load.class('logfile');
+const Timer = load.class('timer');
 const Component = load.class('component');
 const FormHandler = load.class('formhandler');
 const validatorService = load.service('validator');
@@ -11,11 +15,14 @@ class Deployer extends Component {
 
     site;
     configForm;
+    timer;
+    logfile;
 
     $formPanel;
     $logPanel;
     $log;
     $btnDone;
+    $btnShowLog;
     $terminal;
     $terminalView;
 
@@ -24,8 +31,10 @@ class Deployer extends Component {
         this.$logPanel = this.$dom('.log-panel');
         this.$log = this.$dom('.log');
         this.$btnDone = this.$dom('.btn-done');
+        this.$btnShowLog = this.$dom('.btn-show-log');
         this.$terminal = this.$dom('.terminal');
         this.$terminalView = this.$dom('.terminal-view');
+        this.timer = new Timer();
 
         this.configForm = new FormHandler('#deployer-form', (deployConfig, form) => {
             form.startLoading();
@@ -42,17 +51,24 @@ class Deployer extends Component {
         this.$dom('.btn-done').click((e) => {
             e.preventDefault();
             app.openSite(this.site);
-        })
+        });
+
+        this.$dom('.btn-show-log').click((e) => {
+            e.preventDefault();
+            this.logfile.view();
+        });
     }
 
     onActivation(site) {
         this.site = site;
         this.$btnDone.hide();
+        this.$btnShowLog.hide();
         this.$formPanel.show();
         this.$logPanel.hide();
         this.$log.empty();
         this.$terminal.empty().html('');
         this.configForm.setValues(settings.defaultSite.config);
+        this.logfile = new LogFile();
         app.setTitle('Публикация сайта', 'siteview', this.site);
         this.bind($.extend(this.site, {
             'isDumpFound': this.isSiteContainsDump()
@@ -62,6 +78,7 @@ class Deployer extends Component {
     onDeactivation() {
         this.site = null;
         this.configForm.resetValues();
+        this.logfile.delete();
     }
 
     deploy(config) {
@@ -72,12 +89,17 @@ class Deployer extends Component {
             this.makeProdConfig(config);
         }
 
+        app.setToolbar([this.timer]);
+        this.timer.start();
+
         delete config.makeProdConfig;
 
         config.PHPMYADMIN_INSTALL = config.PHPMYADMIN_INSTALL ? 'y' : 'n';
         config.HTTP_HOST = this.site.domain;
 
         this.site.config = config;
+
+        this.initLog();
 
         app.saveUpdatedSite(this.site);
 
@@ -93,6 +115,9 @@ class Deployer extends Component {
     }
 
     done(isSuccess) {
+        this.timer.stop();
+        this.logfile.close();
+
         if (isSuccess) {
             this.site.deploy.done = true;
             this.site.deploy.date = Date.now();
@@ -107,9 +132,25 @@ class Deployer extends Component {
 
         app.saveUpdatedSite(this.site);
         this.$btnDone.show();
+        this.$btnShowLog.show();
+    }
+
+    initLog() {
+        this.logfile.write('Начало лога: ' + moment().locale('ru').format('LLL'));
+        this.logfile.write('Параметры публикации: ')
+        $.each(this.site.config, (param, value) => {
+            this.logfile.write(`    ${param} = ${value}`);
+        });
+        this.logfile.write('');
+        this.logfile.write('Лог публикации:');
     }
 
     log(message) {
+        const logMessageTime = this.timer.getTimeString();
+        const logMessageType = message.type.padEnd(6);
+        const logMessageText = message.text;
+        this.logfile.write(`[${logMessageTime}][${logMessageType}] ${logMessageText}`);
+
         if (message.type == 'stdout' || message.type == 'stderr' || message.type == 'exec') {
             this.$terminal.append(`<div class="line line-${message.type}">${message.text}</div>`);
             this.$terminalView.scrollTop(this.$terminal.height());

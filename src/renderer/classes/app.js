@@ -1,6 +1,7 @@
 const { remote, shell, clipboard } = load.node('electron');
 const { URL } = load.node('url');
 const Config = load.class('config');
+const Timer = load.class('timer');
 const encryptService = load.service('encrypt');
 
 
@@ -17,7 +18,8 @@ class App {
         'siteform',
         'siteview',
         'deployer',
-        'certmaker'
+        'certmaker',
+        'about'
     ];
     defaultComponent = 'sitelist';
 
@@ -79,6 +81,10 @@ class App {
         return component;
     }
 
+    openPath(file) {
+        shell.openPath(file);
+    }
+
     initControls() {
         $('title').text(this.title);
 
@@ -106,6 +112,10 @@ class App {
         });
     }
 
+    getPath(name) {
+        return remote.app.getPath(name);
+    }
+
     toast(options) {
         bootoast.toast(options);
     }
@@ -130,6 +140,11 @@ class App {
     setToolbar(buttons) {
         this.resetToolbar();
         buttons.forEach((button) => {
+            if (button instanceof Timer) {
+                this.dom.$toolbar.append(button.getDOM());
+                return;
+            }
+
             if (button === '-') {
                 $('<span class="spacer"></span>').appendTo(this.dom.$toolbar);
                 return;
@@ -324,6 +339,10 @@ class App {
     getDomainFromURL(url) {
         let parsedURL = new URL(url);
         return parsedURL.host;
+    }
+
+    about() {
+        this.view('about');
     }
 
 }
